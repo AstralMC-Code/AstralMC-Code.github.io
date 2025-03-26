@@ -51,7 +51,7 @@
             border-bottom: 1px solid rgba(251, 231, 239, 0.7);
             z-index: 1000;
         }
-        .navbar-btn {
+        .navbar-link {
             list-style: none;
             display: flex;
             transition: max-height 0.4 ease-in-out;
@@ -61,19 +61,19 @@
             max-height: 100%;
             border-bottom: none;
         }
-        .navbar-btn li {
+        .navbar-link li {
             margin: 0 15px;
             position: relative;
         }
-        .navbar-btn a {
+        .navbar-link a {
             position: relative;
             text-decoration: none;
         }
-        .navbar-btn a:hover {
+        .navbar-link a:hover {
             color: linear-gradient(90deg, rgba(223,120,93,1) 0%, rgba(211,131,75,1) 25%, rgba(199,146,57,1) 50%, rgba(187,162,39,1) 75%, rgba(175,175,20,1) 100%);
             cursor: pointer;
         }
-        .menu-links a::after {
+        .navbar-link a::after {
             content: "";
             position: absolute;
             left: 50%;
@@ -83,14 +83,14 @@
             background-color: #FFD700;
             transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
         }
-        .menu-links a:hover::after {
+        .navbar-link a:hover::after {
             transform: scaleX(1);
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <ul>
+        <ul class="navbar-link">
             <li><a>Button 1</a></li>
             <li><a>Button 2</a></li>
         </ul>
