@@ -73,12 +73,27 @@
             color: linear-gradient(90deg, rgba(223,120,93,1) 0%, rgba(211,131,75,1) 25%, rgba(199,146,57,1) 50%, rgba(187,162,39,1) 75%, rgba(175,175,20,1) 100%);
             cursor: pointer;
         }
+        .menu-links a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -3px; /* Adjusts distance of underline */
+            width: 0;
+            height: 2px;
+            background-color: #FFD700;
+            transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+        }
+        .menu-links a:hover::after {
+            transform: scaleX(1);
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <li><a>Button 1</a></li>
-        <li><a>Button 2</a></li>
+        <ul>
+            <li><a>Button 1</a></li>
+            <li><a>Button 2</a></li>
+        </ul>
     </div>
     <div class="content">
         <p>Text</p>
