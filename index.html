@@ -37,6 +37,42 @@
             text-align: center;
             margin: auto;
         }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px 20px;
+            color: white;
+            width: 100%;
+            position: fixed;
+            top: 0%;
+            left: 0%;
+            border-bottom: 1px solid rgba(251, 231, 239, 0.7);
+            z-index: 1000;
+        }
+        .navbar-btn {
+            list-style: none;
+            display: flex;
+            transition: max-height 0.4 ease-in-out;
+            padding-left: 0;
+            margin-left: 0;
+            overflow: scroll;
+            max-height: 100%;
+            border-bottom: none;
+        }
+        .navbar-btn li {
+            margin: 0 15px;
+            position: relative;
+        }
+        .navbar-btn a {
+            position: relative;
+            text-decoration: none;
+        }
+        .navbar-btn a:hover {
+            color: linear-gradient(90deg, rgba(223,120,93,1) 0%, rgba(211,131,75,1) 25%, rgba(199,146,57,1) 50%, rgba(187,162,39,1) 75%, rgba(175,175,20,1) 100%);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
