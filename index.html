@@ -1,128 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AstralMC Code</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background: url('https://raw.githubusercontent.com/AstralMC-Main/AstralMC-Main.github.io/main/IMG_0583.gif') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            backdrop-filter: blur(1vh);
-        }
-        .content {
-            background-color: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(1px);
-            color: #aaa;
-            padding: 40px;
-            border-radius: 50px;
-            max-width: 80%;
-            border: 1px solid rgba(251, 231, 239, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin: auto;
-            transition: 0.3s;
-        }
-        .content:hover {
-            background-color: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(251, 231, 239, 0.7);
-            transition: 0.3s;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px 20px;
-            color: white;
-            width: 100%;
-            position: fixed;
-            top: 0%;
-            left: 0%;
-            border-bottom: 1px solid rgba(251, 231, 239, 0.7);
-            z-index: 1000;
-        }
-        .navbar-link {
-            list-style: none;
-            display: flex;
-            transition: max-height 0.4 ease-in-out;
-            padding-left: 0;
-            margin-left: 0;
-            overflow: scroll;
-            max-height: 100%;
-            border-bottom: none;
-        }
-        .navbar-link li {
-            margin: 0 15px;
-            position: relative;
-        }
-        .navbar-link a {
-            background: linear-gradient(135deg, #ffdf42, #ffcb2a, #ffb60e, #ffa000, #ff8900, #ff6f00, #ff5000, #ff2212);
-            background-clip: text;
-            color: white;
-            transition: 0.2s ease-in-out;
-        }
-        .navbar-link a:hover {
-            background: linear-gradient(135deg, #ffdf42, #ffcb2a, #ffb60e, #ffa000, #ff8900, #ff6f00, #ff5000, #ff2212);
-            background-clip: text;
-            color: transparent;
-            cursor: pointer;
-            transition: 0.2s ease-in-out;
-            text-shadow: 0 0 2px rgba(235,235,235,1);
-    }
-        }
-        .navbar-link a:hover::after {
-            transform: scaleX(1);
-        }
-        .underline {
-            position: relative;
-            text-decoration: none;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Section Scroll</title>
+<style>
+@font-face {
+  font-family: 'Enter the Grid 2';
+  src: url('https://static.wfonts.com/data/2014/01/13/enter-the-grid-2/Enter the Grid 2.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Revenant';
+  src: url('https://static.wfonts.com/data/2015/11/28/revenant/Revenant.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MODERN WARFARE';
+  src: url('https://static.wfonts.com/data/2026/01/12/modern-warfare/MODERN WARFARE.otf') format('opentype');
+  font-display: swap;
+}
 
-        .underline::after {
-            background: linear-gradient(135deg, #ffdf42, #ffcb2a, #ffb60e, #ffa000, #ff8900, #ff6f00, #ff5000, #ff2212);
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            border-radius: 69px;
-            bottom: 0;
-            left: 0;
-            transition: width 0.3s ease-in-out;
-        }
+:root { background: #f0fafa; }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Enter the Grid 2', system-ui, sans-serif;
+  scroll-behavior: smooth;
+}
+*:focus {
+  outline: none;
+}
+section.pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.grid {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to bottom left, transparent 7.02vw, #20000012 7.02vw, #20000012 7.12vw, transparent 0px),
+    linear-gradient(to bottom, #20000012 0.1vw, transparent 0px),
+    linear-gradient(to right, #20000012 0.1vw, transparent 0px);
+  background-size: 10vw 10vw;
+  -webkit-mask-image:
+    linear-gradient(to top,    transparent 0%, black 25%),
+    linear-gradient(to bottom, transparent 0%, black 25%),
+    linear-gradient(to left,   transparent 0%, black 25%),
+    linear-gradient(to right,  transparent 0%, black 25%);
+  -webkit-mask-composite: intersect;
+          mask-composite: intersect;
+  pointer-events: none;
+}
+.grid-content {
+  position: relative;
+  z-index: 1;
+  top: 3vw;
+  padding: 3vw 12vw;
+  left:2vw;
+  font-size: 5.5vh;
+  color: #373c44;
+}
+  .smalltext1 {
+  font-size: 4vh;
+  }
+  .smalltext2 {
+  font-size: 2.5vh;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10vh;
+    height: 100%;
+    background-color: #f0fafa;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.2s;
+    overflow: hidden;
+    z-index: 1000;
+    box-shadow: 0px 0px 0.7vh 0.7vh #e0eaea
+  }
 
-        .underline:hover::after {
-            width: 100%;
-        }
-    </style>
+  .sidebar:hover {
+    width: 30vh;
+  }
+
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 2vh;
+    color: #cbdada;
+    text-decoration: none;
+    transition: 0.3s;
+    white-space: nowrap;
+  }
+
+  .sidebar a:hover {
+    background-color: #daeced;
+    color: #373c44;
+    transition: 0.2s;
+  }
+
+  .sidebar a i {
+    font-size: 5vh;
+    min-width: 6vh;
+    text-align: center;
+    transition: 0.2s;
+  }
+  .sidebar a:hover i {
+    transform: rotate(45deg);
+  }
+
+  .sidebar span {
+    margin-left: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .sidebar:hover span {
+    opacity: 1;
+  }
+  .sidebar a.active {
+    background-color: #daeced;
+    color: #373c44;
+  }
+  .section-content {
+  position: relative;
+  z-index: 1;
+  padding: 0 12vw;
+  left:2vw;
+  font-size: 32px;
+  color: #373c44;
+  transition: 0.3s;
+  }
+  .contacts {
+  display: flex;
+  flex-direction: column;
+  }
+  .content-discord {
+  position: relative;
+  z-index: 1;
+  padding: 0 13vw;
+  left:2vw;
+  font-size: 5vh;
+  color: #373c44;
+  transition: 0.3s;
+  cursor: pointer;
+  }
+  .content-discord i {
+  position: absolute;
+  width: 2vh;
+  }
+  .content-discord:hover{
+  color: #5865F2;
+  }
+  .content-discord span {
+  font-family: 'MODERN WARFARE';
+  margin-left: 7vh;
+  opacity: 0.1;
+  transition: 0.3s;
+  color: #373c44;
+  }
+  .content-discord:hover span {
+  opacity: 1;
+  }
+  .content-youtube {
+  position: relative;
+  z-index: 1;
+  padding: 0 13vw;
+  left:2vw;
+  font-size: 5vh;
+  color: #373c44;
+  transition: 0.3s;
+  cursor: pointer;
+  }
+  .content-youtube i {
+  position: absolute;
+  width: 2vh;
+  }
+  .content-youtube:hover{
+  color: #cd201f;
+  }
+  .content-youtube span {
+  font-family: 'MODERN WARFARE';
+  margin-left: 7vh;
+  opacity: 0.1;
+  transition: 0.3s;
+  color: #373c44;
+  }
+  .content-youtube:hover span {
+  opacity: 1;
+  }
+  hr {
+  border: none;
+  background-color: black;
+  height: 0.1vh;
+  }
+</style>
 </head>
+
 <body>
-    <div class="navbar">
-        <ul class="navbar-link">
-            <li><a class="underline">Home</a></li>
-            <li><a class="underline">Button 2</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <p>Text</p>
-    </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="sidebar">
+  <a href="#1"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="#2"><i class="fas fa-diamond"></i><span>About</span></a>
+  <a href="#3"><i class="fa-brands fa-square-js"></i><span>Projects</span></a>
+  <a href="#4"><i class="fas fa-location-arrow"></i><span>Contacts</span></a>
+</div>
+<section class="pin" id="1">
+<div class="grid">
+<div class="grid-bg"></div>
+<div class="grid-content">Welcome<hr></div>
+</div>
+
+</section>
+
+<section class="pin" id="2">
+<div class="grid">
+<div class="grid-bg"></div>
+<div class="grid-content">About Me<hr></div>
+</div>
+</section>
+
+<section class="pin" id="3">
+<div class="grid">
+<div class="grid-bg"></div>
+<div class="grid-content">Current Projects<hr></div>
+</div>
+</section>
+
+<section class="pin" id="4">
+<div class="grid">
+<div class="grid-bg"></div>
+<div class="grid-content">Contact Informations<br><hr><a class="smalltext1">Click to Copy</a></div>
+<li class="contacts">
+<a class="content-discord" id="copybutton1" data-copy="@astralmc."><i class="fa-brands fa-discord"></i><span>@astralmc.</span></a>
+<a class="content-youtube" id="copybutton2" data-copy="@astralmc-main"><i class="fa-brands fa-youtube"></i><span>@astralmc-main</span></a>
+</li>
+</div>
+</section>
+
+<script>
+const sections = [...document.querySelectorAll("section.pin")];
+
+let activeIndex = 0;
+let scrollAccumulated = 0;
+let isAnimating = false;
+
+const THRESHOLD = 150;
+
+function updateActiveIndex() {
+  const index = sections.findIndex(sec => {
+    const r = sec.getBoundingClientRect();
+    return r.top <= 0 && r.bottom > 0;
+  });
+
+  if (index !== -1 && index !== activeIndex) {
+    activeIndex = index;
+    scrollAccumulated = 0;
+  }
+}
+
+function goTo(index) {
+  if (index < 0 || index >= sections.length) return;
+
+  isAnimating = true;
+  scrollAccumulated = 0;
+
+  sections[index].scrollIntoView({ behavior: "smooth" });
+
+  setTimeout(() => isAnimating = false, 70);
+}
+
+window.addEventListener("scroll", updateActiveIndex);
+
+window.addEventListener("wheel", (e) => {
+  if (isAnimating) return;
+
+  updateActiveIndex();
+
+  scrollAccumulated += e.deltaY;
+
+  if (scrollAccumulated > THRESHOLD) {
+    goTo(activeIndex + 1);
+  } else if (scrollAccumulated < -THRESHOLD) {
+    goTo(activeIndex - 1);
+  }
+
+  e.preventDefault();
+}, { passive: false });
+const sidebarLinks = [...document.querySelectorAll(".sidebar a")];
+
+function updateSidebar() {
+  sidebarLinks.forEach((link, i) => {
+    link.classList.toggle("active", i === activeIndex);
+  });
+}
+
+function updateActiveIndex() {
+  const index = sections.findIndex(sec => {
+    const r = sec.getBoundingClientRect();
+    return r.top <= window.innerHeight / 2 && r.bottom > window.innerHeight / 2;
+  });
+
+  if (index !== -1 && index !== activeIndex) {
+    activeIndex = index;
+    scrollAccumulated = 0;
+    updateSidebar(); // <- added here
+  }
+}
+updateSidebar();
+document.addEventListener("keydown", function(e) {
+    if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
+document.querySelectorAll('[id^="copybutton"]').forEach(btn => {
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const text = btn.dataset.copy;
+    navigator.clipboard.writeText(text)
+  });
+});
+</script>
+
 </body>
 </html>
