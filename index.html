@@ -114,7 +114,9 @@
   .sidebar a:hover i {
   transform: rotate(45deg);
   }
-
+  .sidebar:hover a i#hide {
+  opacity: 0;
+  }
   .sidebar span {
   font-size: 3vh;
   margin-left: 2.5vh;
@@ -164,6 +166,10 @@
   linear-gradient(135deg, rgba(225, 252, 253, 0.95), rgba(203, 234, 235, 0.95)),url("https://via.placeholder.com/800x500");
   border: 0.3vh solid rgba(195, 255, 255, 1);
   transform: translateY(-1vh);
+  }
+  .project-box img {
+  margin: auto;
+  font-size: 5vh;
   }
   .project-box h3 {
   margin: 0;
@@ -244,7 +250,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <div class="sidebar">
-  <a href="#1"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="#1"><i class="fas fa-home" id="hide"></i><span style="font-family: 'MODERN WARFARE'; font-size: 5.5vh; margin-left: -6.5vh;">Astral</span></a>
   <a href="#2"><i class="fas fa-diamond"></i><span>About</span></a>
   <a href="#3"><i class="fa-brands fa-square-js"></i><span>Projects</span></a>
   <a href="#4"><i class="fas fa-location-arrow"></i><span>Contacts</span></a>
@@ -269,12 +275,13 @@
 <div class="grid-bg"></div>
 <div class="grid-content">Current Projects<hr></div>
 <div class="project-box">
-  <h3>Project 1</h3>
-  <p>Short project description</p>
+  <img src="Image Placeholder" alt="Image Placeholder">
+  <h3>Astral Network</h3>
+  <p>A small Minecraft server network</p>
 </div>
 <div class="project-box">
-  <h3>Project 2</h3>
-  <p>Short project description</p>
+  <h3>Other Projects</h3>
+  <p>No current projects</p>
 </div>
 </div>
 </section>
