@@ -148,7 +148,7 @@
   max-width: 60vh;
   min-height: 15vh;
   background:
-  linear-gradient(135deg, rgba(225, 252, 253, 0.75), rgba(203, 234, 235, 0.75)),url("https://via.placeholder.com/800x500");
+  linear-gradient(135deg, rgba(225, 252, 253, 0.75), rgba(203, 234, 235, 0.75));
   border: 0.3vh solid rgba(130, 215, 217, 0.25);
   background-size: cover;
   background-position: center;
@@ -163,13 +163,13 @@
   }
   .project-box:hover {
   background:
-  linear-gradient(135deg, rgba(225, 252, 253, 0.95), rgba(203, 234, 235, 0.95)),url("https://via.placeholder.com/800x500");
+  linear-gradient(135deg, rgba(225, 252, 253, 0.95), rgba(203, 234, 235, 0.95));
   border: 0.3vh solid rgba(195, 255, 255, 1);
   transform: translateY(-1vh);
   }
   .project-box img {
   margin: auto;
-  font-size: 2.5vh;
+  font-size: 2vh;
   }
   .project-box h3 {
   margin: 0;
@@ -299,87 +299,80 @@
 
 <script>
 const sections = [...document.querySelectorAll("section.pin")];
-
+const sidebarLinks = [...document.querySelectorAll(".sidebar a")];
 let activeIndex = 0;
 let scrollAccumulated = 0;
 let isAnimating = false;
-
-const THRESHOLD = 150;
-
-function updateActiveIndex() {
-  const index = sections.findIndex(sec => {
-    const r = sec.getBoundingClientRect();
-    return r.top <= 0 && r.bottom > 0;
-  });
-
-  if (index !== -1 && index !== activeIndex) {
-    activeIndex = index;
-    scrollAccumulated = 0;
-  }
-}
-
-function goTo(index) {
-  if (index < 0 || index >= sections.length) return;
-
-  isAnimating = true;
-  scrollAccumulated = 0;
-
-  sections[index].scrollIntoView({ behavior: "smooth" });
-
-  setTimeout(() => isAnimating = false, 70);
-}
-
-window.addEventListener("scroll", updateActiveIndex);
-
-window.addEventListener("wheel", (e) => {
-  if (isAnimating) return;
-
-  updateActiveIndex();
-
-  scrollAccumulated += e.deltaY;
-
-  if (scrollAccumulated > THRESHOLD) {
-    goTo(activeIndex + 1);
-  } else if (scrollAccumulated < -THRESHOLD) {
-    goTo(activeIndex - 1);
-  }
-
-  e.preventDefault();
-}, { passive: false });
-const sidebarLinks = [...document.querySelectorAll(".sidebar a")];
-
+const THRESHOLD = 200;
+const FRICTION = 0.88;
+const MIN_MOMENTUM = 0.5;
 function updateSidebar() {
   sidebarLinks.forEach((link, i) => {
     link.classList.toggle("active", i === activeIndex);
   });
 }
-
 function updateActiveIndex() {
   const index = sections.findIndex(sec => {
     const r = sec.getBoundingClientRect();
-    return r.top <= window.innerHeight / 2 && r.bottom > window.innerHeight / 2;
+    const mid = window.innerHeight / 2;
+    return r.top <= mid && r.bottom > mid;
   });
-
   if (index !== -1 && index !== activeIndex) {
     activeIndex = index;
     scrollAccumulated = 0;
     updateSidebar();
   }
 }
-updateSidebar();
-document.addEventListener("keydown", function(e) {
-    if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
-        e.preventDefault();
+function goTo(index) {
+  if (index < 0 || index >= sections.length) return;
+  isAnimating = true;
+  scrollAccumulated = 0;
+  sections[index].scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => {
+    isAnimating = false;
+  }, 120);
+}
+window.addEventListener("scroll", updateActiveIndex);
+window.addEventListener("wheel", (e) => {
+  if (isAnimating) return;
+  updateActiveIndex();
+  const atTop = activeIndex === 0;
+  const atBottom = activeIndex === sections.length - 1;
+  if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+    scrollAccumulated *= 0.5;
+    e.preventDefault();
+    return;
+  }
+  scrollAccumulated += e.deltaY;
+  e.preventDefault();
+}, { passive: false });
+function momentumLoop() {
+  if (!isAnimating) {
+    scrollAccumulated *= FRICTION;
+    if (Math.abs(scrollAccumulated) < MIN_MOMENTUM) {
+      scrollAccumulated = 0;
     }
+    if (scrollAccumulated > THRESHOLD) {
+      goTo(activeIndex + 1);
+    } else if (scrollAccumulated < -THRESHOLD) {
+      goTo(activeIndex - 1);
+    }
+  }
+  requestAnimationFrame(momentumLoop);
+}
+momentumLoop();
+document.addEventListener("keydown", (e) => {
+  if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+    e.preventDefault();
+  }
 }, false);
 document.querySelectorAll('[id^="copybutton"]').forEach(btn => {
-  if (!btn) return;
-  btn.addEventListener('click', () => {
-    const text = btn.dataset.copy;
-    navigator.clipboard.writeText(text)
+  btn.addEventListener("click", () => {
+    navigator.clipboard.writeText(btn.dataset.copy);
   });
 });
+updateActiveIndex();
+updateSidebar();
 </script>
-
 </body>
 </html>
