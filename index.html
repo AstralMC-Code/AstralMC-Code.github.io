@@ -5,62 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Section Scroll</title>
 <style>
-@font-face {
+  @font-face {
   font-family: 'Enter the Grid 2';
   src: url('https://static.wfonts.com/data/2014/01/13/enter-the-grid-2/Enter the Grid 2.otf') format('opentype');
   font-display: swap;
-}
-@font-face {
+  }
+  @font-face {
   font-family: 'Revenant';
   src: url('https://static.wfonts.com/data/2015/11/28/revenant/Revenant.otf') format('opentype');
   font-display: swap;
-}
-@font-face {
+  }
+  @font-face {
   font-family: 'MODERN WARFARE';
   src: url('https://static.wfonts.com/data/2026/01/12/modern-warfare/MODERN WARFARE.otf') format('opentype');
   font-display: swap;
-}
-
-:root { background: #f0fafa; }
-html, body {
+  }
+  :root { background: #f0fafa; }
+  html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: 'Enter the Grid 2', system-ui, sans-serif;
   scroll-behavior: smooth;
-}
-*:focus {
+  }
+  *:focus {
   outline: none;
-}
-section.pin {
+  }
+  section.pin {
   position: sticky;
   top: 0;
   height: 100vh;
   overflow: hidden;
-}
-.grid {
+  }
+  .grid {
   position: relative;
   height: 100%;
   width: 100%;
-}
-.grid-bg {
+  }
+  .grid-bg {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to bottom left, transparent 7.02vw, #20000012 7.02vw, #20000012 7.12vw, transparent 0px),
-    linear-gradient(to bottom, #20000012 0.1vw, transparent 0px),
-    linear-gradient(to right, #20000012 0.1vw, transparent 0px);
+  linear-gradient(to bottom left, transparent 7.02vw, #20000012 7.02vw, #20000012 7.12vw, transparent 0),
+  linear-gradient(to bottom, #20000012 0.1vw, transparent 0),
+  linear-gradient(to right, #20000012 0.1vw, transparent 0);
   background-size: 10vw 10vw;
   -webkit-mask-image:
-    linear-gradient(to top,    transparent 0%, black 25%),
-    linear-gradient(to bottom, transparent 0%, black 25%),
-    linear-gradient(to left,   transparent 0%, black 25%),
-    linear-gradient(to right,  transparent 0%, black 25%);
+  linear-gradient(to top,    transparent 0%, black 25%),
+  linear-gradient(to bottom, transparent 0%, black 25%),
+  linear-gradient(to left,   transparent 0%, black 25%),
+  linear-gradient(to right,  transparent 0%, black 25%);
   -webkit-mask-composite: intersect;
-          mask-composite: intersect;
+  mask-composite: intersect;
   pointer-events: none;
-}
-.grid-content {
+  }
+  .grid-content {
   position: relative;
   z-index: 1;
   top: 3vw;
@@ -68,7 +67,7 @@ section.pin {
   left:2vw;
   font-size: 5.5vh;
   color: #373c44;
-}
+  }
   .smalltext1 {
   font-size: 4vh;
   }
@@ -76,54 +75,51 @@ section.pin {
   font-size: 2.5vh;
   }
   .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 10vh;
-    height: 100%;
-    background-color: #f0fafa;
-    display: flex;
-    flex-direction: column;
-    transition: width 0.2s;
-    overflow: hidden;
-    z-index: 1000;
-    box-shadow: 0px 0px 0.7vh 0.7vh #e0eaea
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10vh;
+  height: 100%;
+  background-color: #f0fafa;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.2s;
+  overflow: hidden;
+  z-index: 1000;
+  box-shadow: 0 0 0.7vh 0.7vh #e0eaea
   }
-
   .sidebar:hover {
-    width: 30vh;
+  width: 30vh;
   }
-
   .sidebar a {
-    display: flex;
-    align-items: center;
-    padding: 2vh;
-    color: #cbdada;
-    text-decoration: none;
-    transition: 0.3s;
-    white-space: nowrap;
+  display: flex;
+  align-items: center;
+  padding: 2vh;
+  color: #cbdada;
+  text-decoration: none;
+  transition: 0.3s;
+  white-space: nowrap;
   }
-
   .sidebar a:hover {
-    background-color: #daeced;
-    color: #373c44;
-    transition: 0.2s;
+  background-color: #daeced;
+  color: #373c44;
+  transition: 0.2s;
   }
-
   .sidebar a i {
-    font-size: 5vh;
-    min-width: 6vh;
-    text-align: center;
-    transition: 0.2s;
+  font-size: 5vh;
+  min-width: 6vh;
+  text-align: center;
+  transition: 0.2s;
   }
   .sidebar a:hover i {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
   }
 
   .sidebar span {
-    margin-left: 10px;
-    opacity: 0;
-    transition: opacity 0.3s;
+  font-size: 3vh;
+  margin-left: 2.5vh;
+  opacity: 0;
+  transition: opacity 0.3s;
   }
 
   .sidebar:hover span {
@@ -138,15 +134,51 @@ section.pin {
   z-index: 1;
   padding: 0 12vw;
   left:2vw;
-  font-size: 32px;
+  font-size: 13vh;
   color: #373c44;
   transition: 0.3s;
+  }
+  .project-box {
+  position: relative;
+  left: 12vw;
+  min-width: 30vw;
+  max-width: 60vw;
+  max-width: 60vh;
+  min-height: 15vh;
+  background:
+  linear-gradient(135deg, rgba(225, 252, 253, 0.75), rgba(203, 234, 235, 0.75)),url("https://via.placeholder.com/800x500");
+  border: 0.3vh solid rgba(130, 215, 217, 0.25);
+  background-size: cover;
+  background-position: center;
+  border-radius: 6vh;
+  margin: 3vh 0;
+  padding: 3vh;
+  color: #3a2f00;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: 0.25s ease;
+  }
+  .project-box:hover {
+  background:
+  linear-gradient(135deg, rgba(225, 252, 253, 0.95), rgba(203, 234, 235, 0.95)),url("https://via.placeholder.com/800x500");
+  border: 0.3vh solid rgba(195, 255, 255, 1);
+  transform: translateY(-1vh);
+  }
+  .project-box h3 {
+  margin: 0;
+  font-size: 3.4vh;
+  }
+  .project-box p {
+  margin: 1vh 0 0;
+  font-size: 2.5vh;
+  line-height: 1.4;
   }
   .contacts {
   display: flex;
   flex-direction: column;
   }
-  .content-discord {
+  .contact-discord {
   position: relative;
   z-index: 1;
   padding: 0 13vw;
@@ -156,24 +188,24 @@ section.pin {
   transition: 0.3s;
   cursor: pointer;
   }
-  .content-discord i {
+  .contact-discord i {
   position: absolute;
   width: 2vh;
   }
-  .content-discord:hover{
+  .contact-discord:hover{
   color: #5865F2;
   }
-  .content-discord span {
+  .contact-discord span {
   font-family: 'MODERN WARFARE';
   margin-left: 7vh;
   opacity: 0.1;
   transition: 0.3s;
   color: #373c44;
   }
-  .content-discord:hover span {
+  .contact-discord:hover span {
   opacity: 1;
   }
-  .content-youtube {
+  .contact-youtube {
   position: relative;
   z-index: 1;
   padding: 0 13vw;
@@ -183,21 +215,21 @@ section.pin {
   transition: 0.3s;
   cursor: pointer;
   }
-  .content-youtube i {
+  .contact-youtube i {
   position: absolute;
   width: 2vh;
   }
-  .content-youtube:hover{
+  .contact-youtube:hover{
   color: #cd201f;
   }
-  .content-youtube span {
+  .contact-youtube span {
   font-family: 'MODERN WARFARE';
   margin-left: 7vh;
   opacity: 0.1;
   transition: 0.3s;
   color: #373c44;
   }
-  .content-youtube:hover span {
+  .contact-youtube:hover span {
   opacity: 1;
   }
   hr {
@@ -236,6 +268,14 @@ section.pin {
 <div class="grid">
 <div class="grid-bg"></div>
 <div class="grid-content">Current Projects<hr></div>
+<div class="project-box">
+  <h3>Project 1</h3>
+  <p>Short project description</p>
+</div>
+<div class="project-box">
+  <h3>Project 2</h3>
+  <p>Short project description</p>
+</div>
 </div>
 </section>
 
@@ -244,8 +284,8 @@ section.pin {
 <div class="grid-bg"></div>
 <div class="grid-content">Contact Informations<br><hr><a class="smalltext1">Click to Copy</a></div>
 <li class="contacts">
-<a class="content-discord" id="copybutton1" data-copy="@astralmc."><i class="fa-brands fa-discord"></i><span>@astralmc.</span></a>
-<a class="content-youtube" id="copybutton2" data-copy="@astralmc-main"><i class="fa-brands fa-youtube"></i><span>@astralmc-main</span></a>
+<a class="contact-discord" id="copybutton1" data-copy="@astralmc."><i class="fa-brands fa-discord"></i><span>@astralmc.</span></a>
+<a class="contact-youtube" id="copybutton2" data-copy="@astralmc-main"><i class="fa-brands fa-youtube"></i><span>@astralmc-main</span></a>
 </li>
 </div>
 </section>
@@ -316,7 +356,7 @@ function updateActiveIndex() {
   if (index !== -1 && index !== activeIndex) {
     activeIndex = index;
     scrollAccumulated = 0;
-    updateSidebar(); // <- added here
+    updateSidebar();
   }
 }
 updateSidebar();
