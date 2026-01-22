@@ -105,6 +105,9 @@
   color: #373c44;
   transition: 0.2s;
   }
+  .sidebar a:hover span {
+   --underline-width: 100%;
+  }
   .sidebar a i {
   font-size: 5vh;
   min-width: 6vh;
@@ -122,6 +125,11 @@
   margin-left: 2.5vh;
   opacity: 0;
   transition: opacity 0.3s;
+  text-decoration: none; 
+  position: relative;
+  background: linear-gradient(currentColor 0 0) bottom left / var(--underline-width, 0%) 0.1vh no-repeat;
+  transition: background-size 0.2s ease-in-out;
+
   }
 
   .sidebar:hover span {
@@ -238,6 +246,33 @@
   .contact-youtube:hover span {
   opacity: 1;
   }
+  .contact-email {
+  position: relative;
+  z-index: 1;
+  padding: 0 13vw;
+  left:2vw;
+  font-size: 5vh;
+  color: #373c44;
+  transition: 0.3s;
+  cursor: pointer;
+  }
+  .contact-email i {
+  position: absolute;
+  width: 2vh;
+  }
+  .contact-email:hover{
+  color: #ece9e9;
+  }
+  .contact-email span {
+  font-family: 'MODERN WARFARE';
+  margin-left: 7vh;
+  opacity: 0.1;
+  transition: 0.3s;
+  color: #373c44;
+  }
+  .contact-email:hover span {
+  opacity: 1;
+  }
   hr {
   border: none;
   background-color: black;
@@ -292,7 +327,8 @@
 <div class="grid-content">Contact Informations<br><hr><a class="smalltext1">Click to Copy</a></div>
 <li class="contacts">
 <a class="contact-discord" id="copybutton1" data-copy="@astralmc."><i class="fa-brands fa-discord"></i><span>@astralmc.</span></a>
-<a class="contact-youtube" id="copybutton2" data-copy="@astralmc-main"><i class="fa-brands fa-youtube"></i><span>@astralmc-main</span></a>
+<a class="contact-youtube" id="copybutton2" data-copy="@astralmc_main"><i class="fa-brands fa-youtube"></i><span>@astralmc_main</span></a>
+<a class="contact-email" id="copybutton3" data-copy="astralmc.inbox@gmail.com"><i class="fas fa-envelope"></i><span>astralmc.inbox</span></a>
 </li>
 </div>
 </section>
@@ -330,7 +366,7 @@ function goTo(index) {
   sections[index].scrollIntoView({ behavior: "smooth" });
   setTimeout(() => {
     isAnimating = false;
-  }, 120);
+  }, 20);
 }
 window.addEventListener("scroll", updateActiveIndex);
 window.addEventListener("wheel", (e) => {
