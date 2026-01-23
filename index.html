@@ -139,14 +139,15 @@
     background-color: #daeced;
     color: #373c44;
   }
-  .section-content {
+  .projects {
   position: relative;
   z-index: 1;
-  padding: 0 12vw;
-  left:2vw;
   font-size: 13vh;
   color: #373c44;
   transition: 0.3s;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   }
   .project-box {
   position: relative;
@@ -161,7 +162,7 @@
   background-size: cover;
   background-position: center;
   border-radius: 6vh;
-  margin: 3vh 0;
+  margin: 3vh 1vh;
   padding: 3vh;
   color: #3a2f00;
   display: flex;
@@ -261,6 +262,7 @@
 <div class="grid">
 <div class="grid-bg"></div>
 <div class="grid-content">Current Projects<hr></div>
+<div class="projects">
 <div class="project-box">
   <img src="Image Placeholder" alt="Image Placeholder">
   <h3>Astral Network</h3>
@@ -269,6 +271,7 @@
 <div class="project-box">
   <h3>Other Projects</h3>
   <p>No current projects</p>
+</div>
 </div>
 </div>
 </section>
