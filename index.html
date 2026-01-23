@@ -192,7 +192,7 @@
   display: flex;
   flex-direction: column;
   }
-  .contact-discord {
+  .contact {
   position: relative;
   z-index: 1;
   padding: 0 13vw;
@@ -202,75 +202,27 @@
   transition: 0.3s;
   cursor: pointer;
   }
-  .contact-discord i {
+  .contact i {
   position: absolute;
   width: 2vh;
   }
-  .contact-discord:hover{
+  .contact:hover#copybutton1{
   color: #5865F2;
   }
-  .contact-discord span {
-  font-family: 'MODERN WARFARE';
-  margin-left: 7vh;
-  opacity: 0.1;
-  transition: 0.3s;
-  color: #373c44;
-  }
-  .contact-discord:hover span {
-  opacity: 1;
-  }
-  .contact-youtube {
-  position: relative;
-  z-index: 1;
-  padding: 0 13vw;
-  left:2vw;
-  font-size: 5vh;
-  color: #373c44;
-  transition: 0.3s;
-  cursor: pointer;
-  }
-  .contact-youtube i {
-  position: absolute;
-  width: 2vh;
-  }
-  .contact-youtube:hover{
+  .contact:hover#copybutton2{
   color: #cd201f;
   }
-  .contact-youtube span {
-  font-family: 'MODERN WARFARE';
-  margin-left: 7vh;
-  opacity: 0.1;
-  transition: 0.3s;
-  color: #373c44;
-  }
-  .contact-youtube:hover span {
-  opacity: 1;
-  }
-  .contact-email {
-  position: relative;
-  z-index: 1;
-  padding: 0 13vw;
-  left:2vw;
-  font-size: 5vh;
-  color: #373c44;
-  transition: 0.3s;
-  cursor: pointer;
-  }
-  .contact-email i {
-  position: absolute;
-  width: 2vh;
-  }
-  .contact-email:hover{
+  .contact:hover#copybutton3{
   color: #ece9e9;
   }
-  .contact-email span {
+  .contact span {
   font-family: 'MODERN WARFARE';
   margin-left: 7vh;
   opacity: 0.1;
   transition: 0.3s;
   color: #373c44;
   }
-  .contact-email:hover span {
+  .contact:hover span {
   opacity: 1;
   }
   hr {
@@ -326,9 +278,9 @@
 <div class="grid-bg"></div>
 <div class="grid-content">Contact Informations<br><hr><a class="smalltext1">Click to Copy</a></div>
 <li class="contacts">
-<a class="contact-discord" id="copybutton1" data-copy="@astralmc."><i class="fa-brands fa-discord"></i><span>@astralmc.</span></a>
-<a class="contact-youtube" id="copybutton2" data-copy="@astralmc_main"><i class="fa-brands fa-youtube"></i><span>@astralmc_main</span></a>
-<a class="contact-email" id="copybutton3" data-copy="astralmc.inbox@gmail.com"><i class="fas fa-envelope"></i><span>astralmc.inbox</span></a>
+<a class="contact" id="copybutton1" data-copy="@astralmc."><i class="fa-brands fa-discord"></i><span>@astralmc.</span></a>
+<a class="contact" id="copybutton2" data-copy="@astralmc_main"><i class="fa-brands fa-youtube"></i><span>@astralmc_main</span></a>
+<a class="contact" id="copybutton3" data-copy="astralmc.inbox@gmail.com"><i class="fas fa-envelope"></i><span>astralmc.inbox</span></a>
 </li>
 </div>
 </section>
