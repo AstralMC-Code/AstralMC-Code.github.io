@@ -4,237 +4,120 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Astral Code</title>
+<!--
+/###################################################\
+[#░█████╗░░██████╗████████╗██████╗░░█████╗░██╗░░░░░#]
+|#██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░#|
+|#███████║╚█████╗░░░░██║░░░██████╔╝███████║██║░░░░░#|
+|#██╔══██║░╚═══██╗░░░██║░░░██╔══██╗██╔══██║██║░░░░░#|
+|#██║░░██║██████╔╝░░░██║░░░██║░░██║██║░░██║███████╗#|
+[#╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝╚══════╝#]
+\###################################################/
+-->
 <style>
-  @font-face {
-  font-family: 'Enter the Grid 2';
-  src: url('https://static.wfonts.com/data/2014/01/13/enter-the-grid-2/Enter the Grid 2.otf') format('opentype');
-  font-display: swap;
-  }
-  @font-face {
-  font-family: 'Revenant';
-  src: url('https://static.wfonts.com/data/2015/11/28/revenant/Revenant.otf') format('opentype');
-  font-display: swap;
-  }
-  @font-face {
-  font-family: 'MODERN WARFARE';
-  src: url('https://static.wfonts.com/data/2026/01/12/modern-warfare/MODERN WARFARE.otf') format('opentype');
-  font-display: swap;
-  }
-  :root { background: #f0fafa; }
-  html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Enter the Grid 2', system-ui, sans-serif;
-  scroll-behavior: smooth;
-  }
-  *:focus {
-  outline: none;
-  }
-  section.pin {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  }
-  .grid {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  }
-  .grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-  linear-gradient(to bottom left, transparent 7.02vw, #20000012 7.02vw, #20000012 7.12vw, transparent 0),
-  linear-gradient(to bottom, #20000012 0.1vw, transparent 0),
-  linear-gradient(to right, #20000012 0.1vw, transparent 0);
-  background-size: 10vw 10vw;
-  -webkit-mask-image:
-  linear-gradient(to top,    transparent 0%, black 25%),
-  linear-gradient(to bottom, transparent 0%, black 25%),
-  linear-gradient(to left,   transparent 0%, black 25%),
-  linear-gradient(to right,  transparent 0%, black 25%);
-  -webkit-mask-composite: intersect;
-  mask-composite: intersect;
-  pointer-events: none;
-  }
-  .grid-content {
-  position: relative;
-  z-index: 1;
-  top: 3vw;
-  padding: 3vw 12vw;
-  left:2vw;
-  font-size: 5.5vh;
-  color: #373c44;
-  }
-  .smalltext1 {
-  font-size: 4vh;
-  }
-  .smalltext2 {
-  font-size: 2.5vh;
-  }
-  .sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10vh;
-  height: 100%;
-  background-color: #f0fafa;
-  display: flex;
-  flex-direction: column;
-  transition: width 0.2s;
-  overflow: hidden;
-  z-index: 1000;
-  box-shadow: 0 0 0.7vh 0.7vh #e0eaea
-  }
-  .sidebar:hover {
-  width: 30vh;
-  }
-  .sidebar a {
-  display: flex;
-  align-items: center;
-  padding: 2vh;
-  color: #cbdada;
-  text-decoration: none;
-  transition: 0.3s;
-  white-space: nowrap;
-  }
-  .sidebar a:hover {
-  background-color: #daeced;
-  color: #373c44;
-  transition: 0.2s;
-  }
-  .sidebar a:hover span {
-   --underline-width: 100%;
-  }
-  .sidebar a i {
-  font-size: 5vh;
-  min-width: 6vh;
-  text-align: center;
-  transition: 0.2s;
-  }
-  .sidebar a:hover i {
-  transform: rotate(45deg);
-  }
-  .sidebar:hover a i#hide {
-  opacity: 0;
-  }
-  .sidebar span {
-  font-size: 3vh;
-  margin-left: 2.5vh;
-  opacity: 0;
-  transition: opacity 0.3s;
-  text-decoration: none; 
-  position: relative;
-  background: linear-gradient(currentColor 0 0) bottom left / var(--underline-width, 0%) 0.1vh no-repeat;
-  transition: background-size 0.2s ease-in-out;
 
-  }
+/* Fonts & Optimizations */
 
-  .sidebar:hover span {
-    opacity: 1;
-  }
-  .sidebar a.active {
-    background-color: #daeced;
-    color: #373c44;
-  }
-  .projects {
-  position: relative;
-  z-index: 1;
-  font-size: 13vh;
-  color: #373c44;
-  transition: 0.3s;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  }
-  .project-box {
-  position: relative;
-  left: 12vw;
-  min-width: 30vw;
-  max-width: 60vw;
-  max-width: 60vh;
-  min-height: 15vh;
-  background:
-  linear-gradient(135deg, rgba(225, 252, 253, 0.75), rgba(203, 234, 235, 0.75));
-  border: 0.3vh solid rgba(130, 215, 217, 0.25);
-  background-size: cover;
-  background-position: center;
-  border-radius: 6vh;
-  margin: 3vh 1vh;
-  padding: 3vh;
-  color: #3a2f00;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  transition: 0.25s ease;
-  }
-  .project-box:hover {
-  background:
-  linear-gradient(135deg, rgba(225, 252, 253, 0.95), rgba(203, 234, 235, 0.95));
-  border: 0.3vh solid rgba(195, 255, 255, 1);
-  transform: translateY(-1vh);
-  }
-  .project-box img {
-  margin: auto;
-  font-size: 2vh;
-  }
-  .project-box h3 {
-  margin: 0;
-  font-size: 3.4vh;
-  }
-  .project-box p {
-  margin: 1vh 0 0;
-  font-size: 2.5vh;
-  line-height: 1.4;
-  }
-  .contacts {
-  display: flex;
-  flex-direction: column;
-  }
-  .contact {
-  position: relative;
-  z-index: 1;
-  padding: 0 13vw;
-  left:2vw;
-  font-size: 5vh;
-  color: #373c44;
-  transition: 0.3s;
-  cursor: pointer;
-  }
-  .contact i {
-  position: absolute;
-  width: 2vh;
-  }
-  .contact:hover#copybutton1{
-  color: #5865F2;
-  }
-  .contact:hover#copybutton2{
-  color: #cd201f;
-  }
-  .contact:hover#copybutton3{
-  color: #ece9e9;
-  }
-  .contact span {
-  font-family: 'MODERN WARFARE';
-  margin-left: 7vh;
-  opacity: 0.1;
-  transition: 0.3s;
-  color: #373c44;
-  }
-  .contact:hover span {
-  opacity: 1;
-  }
-  hr {
-  border: none;
-  background-color: black;
-  height: 0.1vh;
-  }
+  @font-face {font-family: 'Enter the Grid 2'; src: url('https://static.wfonts.com/data/2014/01/13/enter-the-grid-2/Enter the Grid 2.otf') format('opentype'); font-display: swap;}
+  @font-face {font-family: 'Revenant'; src: url('https://static.wfonts.com/data/2015/11/28/revenant/Revenant.otf') format('opentype'); font-display: swap;}
+  @font-face {font-family: 'MODERN WARFARE'; src: url('https://static.wfonts.com/data/2026/01/12/modern-warfare/MODERN WARFARE.otf') format('opentype'); font-display: swap;}
+  @font-face {font-family: 'Ace_Adventure'; src: url('https://static.wfonts.com/data/2015/05/11/ace-adventure/Ace_Adventure.ttf') format('truetype'); font-display: swap;}
+  @font-face {font-family: 'yandermo'; src: url('https://static.wfonts.com/data/2014/10/26/y-andermo/yandermo.ttf') format('truetype'); font-display: swap;}
+  @font-face {font-family: 'chemrea'; src: url('https://static.wfonts.com/data/2016/05/31/chemical-reaction-a-brk/chemrea.ttf') format('truetype'); font-display: swap;}
+  :root {background: #f0fafa;}
+  html, body {margin: 0; padding: 0; height: 100%; font-family: 'Enter the Grid 2', system-ui, sans-serif; scroll-behavior: smooth;font-size:4vh}
+  .smalltext1 {font-size: 4vh;}
+  .smalltext2 {font-size: 2.5vh;}
+  #nowrap {white-space: nowrap;}
+  *:focus {outline: none;}
+  section.pin {position: sticky; top: 0; height: 100vh; overflow: hidden;}
+  .align {position: relative; left: 15vw}
+  .blink {animation: blink 8s infinite}
+  @keyframes blink {10%,12%,14%,16%,18% {opacity:1} 11%,13%,15%,17% {opacity:0;color}}
+
+/* Grid Background */
+
+  .grid {position: relative; height: 100%; width: 100%;}
+  .grid-bg {position: absolute; inset: 0; background-image: linear-gradient(to bottom left, transparent 7.02vw, #20000012 7.02vw, #20000012 7.12vw, transparent 0), linear-gradient(to bottom, #20000012 0.1vw, transparent 0), linear-gradient(to right, #20000012 0.1vw, transparent 0); background-size: 10vw 10vw; -webkit-mask-image: linear-gradient(to top,    transparent 0%, black 25%), linear-gradient(to bottom, transparent 0%, black 25%), linear-gradient(to left,   transparent 0%, black 25%), linear-gradient(to right,  transparent 0%, black 25%); -webkit-mask-composite: intersect; mask-composite: intersect; pointer-events: none;}
+  .grid-content { position: relative; z-index: 1; top: 3vw; padding: 3vw 12vw; left:2vw; font-size: 5.5vh; color: #373c44;}
+
+/* Sidebar/Navbar */
+
+  .sidebar {position: fixed; top: 0; left: 0; width: 10vh; height: 100%; background-color: #f0fafa; display: flex; flex-direction: column; transition: width 0.2s; overflow: hidden; z-index: 1000; box-shadow: 0 0 0.7vh 0.7vh #e0eaea}
+  .sidebar:hover {width: 30vh;}
+  .sidebar a {display: flex; align-items: center; padding: 2vh; color: #cbdada; text-decoration: none; transition: 0.3s; white-space: nowrap;}
+  .sidebar a:hover {background-color: #daeced; color: #373c44; transition: 0.2s;}
+  .sidebar a:hover span {--underline-width: 100%;}
+  .sidebar a i {font-size: 5vh; min-width: 6vh; text-align: center; transition: 0.2s;}
+  .sidebar a:hover i {transform: rotate(45deg);}
+  .sidebar:hover a i#hide {opacity: 0;}
+  .sidebar span {font-size: 3vh; margin-left: 2.5vh; opacity: 0; transition: opacity 0.3s; text-decoration: none;  position: relative; background: linear-gradient(currentColor 0 0) bottom left / var(--underline-width, 0%) 0.1vh no-repeat; transition: background-size 0.2s ease-in-out;}
+  .sidebar:hover span {opacity: 1;} 
+  .sidebar a.active {background-color: #daeced; color: #373c44;}
+
+/* Section 3 (Projects) */
+
+  .projects {position: relative; z-index: 1; font-size: 13vh; color: #373c44; transition: 0.3s; display: flex; flex-wrap: wrap; justify-content: flex-start;}
+  .project-box {position: relative; left: 12vw; min-width: 30vw; max-width: 60vw; max-width: 60vh; min-height: 15vh; background: linear-gradient(135deg, rgba(225, 252, 253, 0.75), rgba(203, 234, 235, 0.75)); border: 0.3vh solid rgba(130, 215, 217, 0.25); background-size: cover; background-position: center; border-radius: 6vh; margin: 3vh 1vh; padding: 3vh; color: #3a2f00; display: flex; flex-direction: column; justify-content: flex-end; transition: 0.25s ease;}
+  .project-box:hover {background: linear-gradient(135deg, rgba(225, 252, 253, 0.95), rgba(203, 234, 235, 0.95)); border: 0.3vh solid rgba(195, 255, 255, 1); transform: translateY(-1vh);}
+  .project-box img {margin: auto; font-size: 2vh;}
+  .project-box h3 {margin: 0; font-size: 3.4vh;}
+  .project-box p {margin: 1vh 0 0; font-size: 2.5vh; line-height: 1.4;}
+
+/* Section 4 (Contact Info) */
+
+  .contacts {display: flex; flex-direction: column;}
+  .contact {position: relative; z-index: 1; padding: 0 13vw; left:2vw; font-size: 5vh; color: #373c44; transition: 0.3s; cursor: pointer;}
+  .contact i {position: absolute;width: 2vh;}
+  .contact:hover#copybutton1{color: #5865F2;}
+  .contact:hover#copybutton2{color: #cd201f;}
+  .contact:hover#copybutton3{color: #ece9e9;}
+  .contact span {font-family: 'MODERN WARFARE'; margin-left: 7vh; opacity: 0.1;transition: 0.3s; color: #373c44;}
+  .contact:hover span {opacity: 1;}
+  hr {border: none; background-color: black; height: 0.1vh;}
+  hr.side {border: none; background-color: white; height: 0.1vh;}
+</style>
+<style>
+
+/* Loading Animation */
+
+  #page-loader {position: fixed; inset: 0; z-index: 999999; background: linear-gradient(120deg, #05070c,#081330, #0b1220, #05070c); background-size: 400% 400%; animation: loaderGradient 10s ease infinite; overflow: hidden; backdrop-filter: blur(0vh); transition:opacity 0.8s ease, visibility 0.8s ease, backdrop-filter 0.8s ease;}
+  #page-loader.hidden {opacity: 0; visibility: hidden; backdrop-filter: blur(2.5vh);}
+  @keyframes loaderGradient {0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }}
+  #page-loader .grid-overlay {position: absolute; inset: 0; background-image:linear-gradient(rgba(255,255,255,0.1) 0.15vh, transparent 0.15vh),linear-gradient(90deg, rgba(255,255,255,0.1) 0.15vh, transparent 0.15vh); background-size: 6vh 6vh; mask-image: radial-gradient(circle at center, black 40%, transparent 75%); opacity: 0.35; pointer-events: none;}
+  #page-loader .loader-center {position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff;}
+  #page-loader .loader-title {font-size: 1.4vh; letter-spacing: 0.35em; opacity: 0.75;}
+  #page-loader .loader-percent {font-size: 2.8vh; margin-top: 0.6vh;
+  letter-spacing: 0.08em;}
+  #page-loader .loader-bar-wrap {position: absolute; left: 50%; bottom: 8vh; transform: translateX(-50%); width: min(90vh, 80vw); height: 0.75vh; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden;}
+  #page-loader .loader-bar {height: 100%; width: 0%; background: linear-gradient(90deg, #6ee7ff, #9efff5, #6ee7ff); box-shadow:0 0 1.2vh rgba(110,231,255,0.8),0 0 2.8vh rgba(110,231,255,0.4);}
+  #site-content {transform: scale(0.98); filter: blur(1.2vh); transition: transform 0.9s ease, filter 0.9s ease;}
+  body.loaded #site-content {transform: scale(1); filter: blur(0);}
+
+/* Fastload Option */
+
+  #loader-toggle {position: fixed; top: 1.8vh; right: 1.8vh; z-index: 999999; padding: 0.9vh 1.4vh; font-size: 1.2vh; letter-spacing: 0.15em; background: rgba(0,0,0,0.55); color: #fff; border: 0.15vh solid rgba(255,255,255,0.2); border-radius: 999px; backdrop-filter: blur(1vh); cursor: pointer; opacity: 0; transform: translateY(-0.6vh); pointer-events: none; transition:opacity 0.35s ease,transform 0.35s ease,background 0.2s ease,border-color 0.2s ease;}
+  #loader-toggle.visible {opacity: 1; transform: translateY(0); pointer-events: auto;}
+  #loader-toggle.active {background: rgba(110,231,255,0.2); border-color: rgba(110,231,255,0.6);}
 </style>
 </head>
-
 <body>
+<div id="page-loader">
+  <div class="grid-overlay"></div>
+
+  <div class="loader-center">
+    <div class="loader-title">INITIALIZING</div>
+    <div class="loader-percent">0%</div>
+  </div>
+
+  <div class="loader-bar-wrap">
+    <div class="loader-bar"></div>
+  </div>
+</div>
+<button id="loader-toggle" aria-label="Toggle loader speed">
+  FAST LOAD
+</button>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <div class="sidebar">
@@ -246,9 +129,11 @@
 <section class="pin" id="1">
 <div class="grid">
 <div class="grid-bg"></div>
-<div class="grid-content">Welcome<hr></div>
+<div class="grid-content">Welcome |<span class="blink" id="nowrap" style="font-family: 'MODERN WARFARE'; font-size: 6.75vh;">Astral</span><hr></div>
+<div class="align">
+<span id="nowrap" style="font-family: 'chemrea';">Welcome to this website</span>
 </div>
-
+</div>
 </section>
 
 <section class="pin" id="2">
@@ -287,7 +172,75 @@
 </li>
 </div>
 </section>
+<script>
+const bar = document.querySelector('#page-loader .loader-bar');
+const percentText = document.querySelector('#page-loader .loader-percent');
+const loader = document.getElementById('page-loader');
+const toggle = document.getElementById('loader-toggle');
 
+const FAST_KEY = 'fastLoaderEnabled';
+let fastMode = localStorage.getItem(FAST_KEY) === 'true';
+
+toggle.classList.toggle('active', fastMode);
+toggle.textContent = fastMode ? 'FAST LOAD' : 'FULL LOAD';
+
+toggle.addEventListener('click', () => {
+  fastMode = !fastMode;
+  localStorage.setItem(FAST_KEY, fastMode);
+  toggle.classList.toggle('active', fastMode);
+  toggle.textContent = fastMode ? 'FAST LOAD' : 'FULL LOAD';
+});
+
+const hoverZoneVH = 10; // % of viewport
+let toggleVisible = false;
+
+window.addEventListener('mousemove', (e) => {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const inZone =
+    e.clientX > vw * (1 - hoverZoneVH / 100) &&
+    e.clientY < vh * (hoverZoneVH / 100);
+  if (inZone !== toggleVisible) {
+    toggleVisible = inZone;
+    toggle.classList.toggle('visible', inZone);
+  }
+});
+let progress = 0;
+let target = fastMode ? 98 : 90;
+let speed = fastMode ? 0.18 : 0.07;
+let finished = false;
+function animate() {
+  progress += (target - progress) * speed;
+  if (target === 100 && progress > 99.7) progress = 100;
+  bar.style.width = progress + '%';
+  percentText.textContent = Math.floor(progress) + '%';
+  if (!finished) {
+    requestAnimationFrame(animate);
+  }
+}
+async function finish() {
+  if (finished) return;
+  finished = true;
+  if (document.readyState !== 'complete') {
+    await new Promise(res => window.addEventListener('load', res, { once: true }));
+  }
+  if (document.fonts) await document.fonts.ready;
+  loader.classList.add('hidden');
+  document.body.classList.add('loaded');
+  setTimeout(() => loader.remove(), 900);
+}
+window.addEventListener('load', () => {
+  target = 100;
+  speed = fastMode ? 0.25 : 0.03;
+});
+const checkProgress = setInterval(() => {
+  if (progress >= 100) {
+    clearInterval(checkProgress);
+    finish();
+  }
+}, 50);
+animate();
+</script>
 <script>
 const sections = [...document.querySelectorAll("section.pin")];
 const sidebarLinks = [...document.querySelectorAll(".sidebar a")];
@@ -321,7 +274,7 @@ function goTo(index) {
   sections[index].scrollIntoView({ behavior: "smooth" });
   setTimeout(() => {
     isAnimating = false;
-  }, 20);
+  }, 0);
 }
 window.addEventListener("scroll", updateActiveIndex);
 window.addEventListener("wheel", (e) => {
