@@ -177,23 +177,18 @@ const bar = document.querySelector('#page-loader .loader-bar');
 const percentText = document.querySelector('#page-loader .loader-percent');
 const loader = document.getElementById('page-loader');
 const toggle = document.getElementById('loader-toggle');
-
 const FAST_KEY = 'fastLoaderEnabled';
 let fastMode = localStorage.getItem(FAST_KEY) === 'true';
-
 toggle.classList.toggle('active', fastMode);
 toggle.textContent = fastMode ? 'FAST LOAD' : 'FULL LOAD';
-
 toggle.addEventListener('click', () => {
   fastMode = !fastMode;
   localStorage.setItem(FAST_KEY, fastMode);
   toggle.classList.toggle('active', fastMode);
   toggle.textContent = fastMode ? 'FAST LOAD' : 'FULL LOAD';
 });
-
-const hoverZoneVH = 10; // % of viewport
+const hoverZoneVH = 10;
 let toggleVisible = false;
-
 window.addEventListener('mousemove', (e) => {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
