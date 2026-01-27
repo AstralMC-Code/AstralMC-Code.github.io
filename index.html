@@ -59,10 +59,11 @@
 
   .projects {position: relative; z-index: 1; font-size: 13vh; color: #373c44; transition: 0.3s; display: flex; flex-wrap: wrap; justify-content: flex-start;}
   .project-box {position: relative; left: 12vw; min-width: 30vw; max-width: 60vw; max-width: 60vh; min-height: 15vh; background: linear-gradient(135deg, rgba(225, 252, 253, 0.75), rgba(203, 234, 235, 0.75)); border: 0.3vh solid rgba(130, 215, 217, 0.25); background-size: cover; background-position: center; border-radius: 6vh; margin: 3vh 1vh; padding: 3vh; color: #3a2f00; display: flex; flex-direction: column; justify-content: flex-end; transition: 0.25s ease;}
-  .project-box:hover {background: linear-gradient(135deg, rgba(225, 252, 253, 0.95), rgba(203, 234, 235, 0.95)); border: 0.3vh solid rgba(195, 255, 255, 1); transform: translateY(-1vh);}
+  .project-box:hover {transform: translateY(-1vh);}
   .project-box img {margin: auto; font-size: 2vh;}
   .project-box h3 {margin: 0; font-size: 3.4vh;}
   .project-box p {margin: 1vh 0 0; font-size: 2.5vh; line-height: 1.4;}
+  #project1 {background-image: url('https://raw.githubusercontent.com/AstralMC-Code/AstralMC-Code.github.io/refs/heads/main/Resources/Banner.png'); text-shadow: 0 0 3vh white; color: #aedcdc}
 
 /* Section 4 (Contact Info) */
 
@@ -148,8 +149,7 @@
 <div class="grid-bg"></div>
 <div class="grid-content">Current Projects<hr></div>
 <div class="projects">
-<div class="project-box">
-  <img src="Image Placeholder" alt="Image Placeholder">
+<div class="project-box" id="project1">
   <h3>Astral Network</h3>
   <p>A small Minecraft server network</p>
 </div>
