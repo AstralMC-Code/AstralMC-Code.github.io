@@ -151,7 +151,6 @@
 
         .global-player {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             padding: 10px;
             margin: 12px 0;
@@ -365,8 +364,25 @@
         .points {
             font-size: 14px;
             color: #9ca3af;
-            margin-right: 0px;
+            margin-left: auto;
         }
+        .rank-number {
+            font-size: 24px;
+            color: #ffffff;
+            width: 35px;
+            text-align: left;
+            opacity: 0.7;
+        }
+#profileRank svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vertical-align: middle;
+}
     </style>
 </head>
 
@@ -445,11 +461,24 @@ function generateData({
     return data;
 }
 let data = generateData({
-    count: 1000,
+    count: 100,
     htChance: 0.4
 });
-<!-- End -->
+data.push(
+    {name: "CustomPlayer1",vanilla: "HT1",uhc: "HT1",pot: "HT1",nethop: "HT1",smp: "HT1",sword: "HT1",axe: "HT1",mace: "HT1",},
 
+);
+<!-- End -->
+        const ranks = [
+            { name: "Rookie", min: 0 },
+            { name: "Novice", min: 10 },
+            { name: "Silver", min: 50 },
+            { name: "Gold", min: 150 },
+            { name: "Diamond", min: 200 },
+            { name: "Master", min: 250 },
+            { name: "Grandmaster", min: 350 },
+            { name: "Celestial", min: 400 }
+        ];
         const modes = [
             "vanilla",
             "uhc",
@@ -513,9 +542,64 @@ let data = generateData({
 
                 player.total = total;
                 player.avg = played ? (total / played) : 0;
+                player.rank = getRank(player.total);
             });
         }
+function getRank(points) {
+    let current = ranks[0];
 
+    for (const r of ranks) {
+        if (points >= r.min) {
+            current = r;
+        } else {
+            break;
+        }
+    }
+
+    return current;
+}
+function getRankIcon(rankName) {
+    switch(rankName) {
+        case "Novice":
+            return `<svg viewBox="0 0 24 24">
+                <path d="M5 15 L12 9 L19 15"/>
+            </svg>`;
+
+        case "Silver":
+            return `<svg viewBox="0 0 24 24">
+                <path d="M5 17 L12 11 L19 17"/>
+                <path d="M5 11 L12 5 L19 11"/>
+            </svg>`;
+
+        case "Gold":
+            return `<svg viewBox="0 0 24 24">
+                <path d="M5 19 L12 13 L19 19"/>
+                <path d="M5 13 L12 7 L19 13"/>
+                <path d="M5 7 L12 1 L19 7"/>
+            </svg>`;
+
+        case "Diamond":
+            return `<svg viewBox="0 0 24 24">
+                <polygon points="12,6 18,16 6,16"/>
+            </svg>`;
+
+        case "Master":
+            return `<svg viewBox="0 0 24 24">
+                <polygon points="12,3 20,11 12,19 4,11"/>
+            </svg>`;
+        case "Grandmaster":
+            return `<svg viewBox="0 0 24 24">
+                <polygon points="12,2 14.5,8 21,8 16,12 18,19 12,15 6,19 8,12 3,8 9.5,8"/>
+            </svg>`;
+        case "Celestial":
+            return `<svg viewBox="0 0 24 24">
+                <polygon points="12,3 19,15 5,15"/>
+                <polygon points="12,19 5,7 19,7"/>
+            </svg>`;
+        default:
+            return "";
+    }
+}
         /* ========================= */
 
         function renderGlobal() {
@@ -536,6 +620,10 @@ let data = generateData({
                 if (i === 2) div.classList.add("rank-3");
                 let left = document.createElement('div');
                 left.className = 'left';
+                
+                let rank = document.createElement('div');
+                rank.className = 'rank-number';
+                rank.textContent = `${i + 1}.`;
 
                 let skinDiv = document.createElement('div');
                 skinDiv.className = 'skin';
@@ -549,6 +637,7 @@ let data = generateData({
                 name.className = 'name';
                 name.textContent = p.name;
 
+                left.appendChild(rank);
                 left.appendChild(skinDiv);
                 left.appendChild(name);
 
@@ -692,7 +781,25 @@ let data = generateData({
         function openProfile(player) {
             profileName.textContent = player.name;
             profileSkin.src = getHead(player.name);
-
+        const oldRank = document.getElementById("profileRank");
+        if (oldRank) oldRank.remove();
+        
+        const rankDiv = document.createElement("div");
+        rankDiv.id = "profileRank";
+        rankDiv.textContent = player.rank.name;
+        rankDiv.innerHTML = `
+            ${getRankIcon(player.rank.name)}
+            <span style="margin-left:6px;">${player.rank.name}</span>
+        `;
+        
+        rankDiv.style.marginTop = "6px";
+        rankDiv.style.fontSize = "14px";
+        rankDiv.style.color = "#9ca3af";
+        rankDiv.style.fontWeight = "600";
+        
+        document.querySelector(".profile-header").appendChild(rankDiv);
+        
+        
             profileModes.innerHTML = "";
 
             modes.forEach(mode => {
