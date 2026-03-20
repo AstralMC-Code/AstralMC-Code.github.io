@@ -102,6 +102,7 @@ h1{font-size:30px;margin-bottom:10px;}
     border-radius:10px;
     image-rendering: pixelated;
     background:rgba(0,0,0,0.2);
+    outline: 1.5px solid #ffffff;
     display:block;
 }
 
@@ -123,13 +124,29 @@ h1{font-size:30px;margin-bottom:10px;}
     justify-content:space-between;
     align-items:center;
     padding:10px;
-    margin:6px 0;
-    border-radius:12px;
+    margin:12px 0;
+    border-radius:14px;
     background:var(--panel);
+    cursor: pointer;
 }
-.global-player.rank-1{box-shadow:0 0 14px gold;border:1px solid gold;}
-.global-player.rank-2{box-shadow:0 0 14px silver;border:1px solid silver;}
-.global-player.rank-3{box-shadow:0 0 14px #cd7f32;border:1px solid #cd7f32;}
+.global-player.rank-1{
+    box-shadow:0 0 6px 1px gold;
+    border:1px solid gold;
+    background:linear-gradient(112deg,rgba(255, 187, 0, 1) 0%, rgba(255, 187, 0, 1) 2%, rgba(24, 24, 74, 1) 26%);
+    
+}
+.global-player.rank-2{
+    box-shadow:0 0 6px 1px silver;
+    border:1px solid silver;
+    background: linear-gradient(112deg,rgba(230, 230, 230, 1) 0%, rgba(230, 230, 230, 1) 2%, rgba(24, 24, 74, 1) 25.5%);
+    
+}
+.global-player.rank-3{
+    box-shadow:0 0 6px 1px #cd7f32;
+    border:1px solid #cd7f32;
+    background: linear-gradient(112deg,rgba(205, 127, 50, 1) 0%, rgba(205, 127, 50, 1) 2%, rgba(24, 24, 74, 1) 25%);
+    
+}
 
 .unranked{text-align:center;color:#6b7280;}
 .divider{
@@ -221,6 +238,12 @@ h1{font-size:30px;margin-bottom:10px;}
 .tier-3{ color:#cd7f32; }
 .tier-4{ color:var(--panel); }
 .tier-5{ color:var(--panel); }
+
+.points{
+    font-size:14px;
+    color:#9ca3af;
+    margin-right:0px;
+}
 </style>
 </head>
 
@@ -270,117 +293,74 @@ const modes = [
     "axe",
     "mace"
 ];
-
+const tierPoints = {
+    HT1: 100,
+    LT1: 90,
+    HT2: 75,
+    LT2: 65,
+    HT3: 55,
+    LT3: 45,
+    HT4: 35,
+    LT4: 25,
+    HT5: 15,
+    LT5: 10
+};
 let data = [
-{"name":"Player1","uhc":"HT1","axe":"HT2","smp":"HT3"},
-{"name":"Player2","uhc":"HT2","axe":"HT1"},
-{"name":"Player3","uhc":"LT3","smp":"LT3","axe":"LT2"},
-{"name":"Player4","uhc":"LT2"},
-{"name":"Player5","uhc":"LT3","axe":"LT3","smp":"LT3"},
-{"name":"Player6","uhc":"HT3","axe":"LT2","smp":"HT2"},
-{"name":"Player7","axe":"LT3","smp":"LT2"},
-{"name":"Player8","uhc":"LT3"},
-{"name":"Player9","uhc":"LT2","axe":"LT3"},
-{"name":"Player10","smp":"LT3","axe":"LT3","uhc":"LT3"},
+{"name":"Player1","vanilla":"LT5","uhc":"LT4","pot":"LT3","axe":"LT2"},
+{"name":"Player2","vanilla":"LT4","smp":"LT5","sword":"LT3","mace":"LT2"},
+{"name":"Player3","uhc":"LT5","pot":"LT4","nethop":"LT3","axe":"LT2"},
+{"name":"Player4","vanilla":"LT3","uhc":"LT5","sword":"LT4","mace":"LT2"},
+{"name":"Player5","pot":"LT5","smp":"LT4","axe":"LT3","mace":"LT2"},
+{"name":"Player6","vanilla":"LT5","uhc":"LT3","nethop":"LT4","sword":"LT2"},
+{"name":"Player7","uhc":"LT4","pot":"LT5","smp":"LT3","axe":"LT2"},
+{"name":"Player8","vanilla":"LT5","sword":"LT4","mace":"LT3","nethop":"LT2"},
+{"name":"Player9","uhc":"LT5","pot":"LT4","smp":"LT3","axe":"LT2"},
+{"name":"Player10","vanilla":"LT4","uhc":"LT5","mace":"LT3","sword":"LT2"},
 
-{"name":"Player11","uhc":"HT1","smp":"HT2"},
-{"name":"Player12","uhc":"LT3","axe":"LT3"},
-{"name":"Player13","uhc":"LT3"},
-{"name":"Player14","axe":"LT2","smp":"LT3"},
-{"name":"Player15","uhc":"LT2","smp":"LT3"},
-{"name":"Player16","uhc":"HT2","axe":"HT2"},
-{"name":"Player17","uhc":"LT3","axe":"LT3","smp":"LT3"},
-{"name":"Player18","smp":"LT2"},
-{"name":"Player19","uhc":"LT3"},
-{"name":"Player20","uhc":"LT2","axe":"LT3","smp":"LT3"},
+{"name":"Player11","vanilla":"LT3","pot":"LT5","nethop":"LT4","axe":"LT2"},
+{"name":"Player12","uhc":"LT5","smp":"LT4","sword":"LT3","mace":"LT2"},
+{"name":"Player13","vanilla":"LT5","uhc":"LT4","pot":"LT3","nethop":"LT2"},
+{"name":"Player14","smp":"LT5","axe":"LT4","mace":"LT3","vanilla":"LT2"},
+{"name":"Player15","uhc":"LT5","pot":"LT4","sword":"LT3","nethop":"LT2"},
+{"name":"Player16","vanilla":"LT4","smp":"LT5","axe":"LT3","mace":"LT2"},
+{"name":"Player17","uhc":"LT3","pot":"LT5","nethop":"LT4","sword":"LT2"},
+{"name":"Player18","vanilla":"LT5","uhc":"LT4","smp":"LT3","axe":"LT2"},
+{"name":"Player19","pot":"LT5","sword":"LT4","mace":"LT3","nethop":"LT2"},
+{"name":"Player20","vanilla":"LT5","uhc":"LT3","smp":"LT4","axe":"LT2"},
 
-{"name":"Player21","uhc":"HT3","axe":"HT2"},
-{"name":"Player22","uhc":"LT3"},
-{"name":"Player23","axe":"LT3","smp":"LT3"},
-{"name":"Player24","uhc":"LT3","smp":"LT2"},
-{"name":"Player25","uhc":"LT2"},
-{"name":"Player26","uhc":"LT3","axe":"LT3"},
-{"name":"Player27","uhc":"HT2","smp":"HT1"},
-{"name":"Player28","uhc":"LT3"},
-{"name":"Player29","axe":"LT2"},
-{"name":"Player30","uhc":"LT3","smp":"LT3"},
+{"name":"Player21","vanilla":"LT2","uhc":"LT3","pot":"LT4","nethop":"LT5"},
+{"name":"Player22","smp":"LT2","sword":"LT3","axe":"LT4","mace":"LT5"},
+{"name":"Player23","vanilla":"LT2","uhc":"LT3","pot":"LT4","sword":"LT5"},
+{"name":"Player24","nethop":"LT2","smp":"LT3","axe":"LT4","mace":"LT5"},
+{"name":"Player25","vanilla":"LT2","uhc":"LT3","sword":"LT4","mace":"LT5"},
+{"name":"Player26","pot":"LT2","nethop":"LT3","smp":"LT4","axe":"LT5"},
+{"name":"Player27","vanilla":"LT2","uhc":"LT3","pot":"LT4","mace":"LT5"},
+{"name":"Player28","sword":"LT2","axe":"LT3","nethop":"LT4","smp":"LT5"},
+{"name":"Player29","vanilla":"LT2","uhc":"LT3","pot":"LT4","axe":"LT5"},
+{"name":"Player30","nethop":"LT2","smp":"LT3","sword":"LT4","mace":"LT5"},
 
-{"name":"Player31","uhc":"LT2"},
-{"name":"Player32","uhc":"HT2","axe":"HT3"},
-{"name":"Player33","uhc":"LT3","smp":"LT3"},
-{"name":"Player34","axe":"LT3"},
-{"name":"Player35","uhc":"LT3"},
-{"name":"Player36","uhc":"LT3","smp":"LT3"},
-{"name":"Player37","uhc":"HT3"},
-{"name":"Player38","uhc":"LT2","axe":"LT3"},
-{"name":"Player39","smp":"LT3"},
-{"name":"Player40","uhc":"LT3"},
+{"name":"Player31","vanilla":"LT1","uhc":"LT2","pot":"LT3","nethop":"LT4"},
+{"name":"Player32","smp":"LT1","sword":"LT2","axe":"LT3","mace":"LT4"},
+{"name":"Player33","vanilla":"LT1","uhc":"LT2","pot":"LT3","sword":"LT4"},
+{"name":"Player34","nethop":"LT1","smp":"LT2","axe":"LT3","mace":"LT4"},
+{"name":"Player35","vanilla":"LT1","uhc":"LT2","sword":"LT3","mace":"LT4"},
+{"name":"Player36","pot":"LT1","nethop":"LT2","smp":"LT3","axe":"LT4"},
+{"name":"Player37","vanilla":"LT1","uhc":"LT2","pot":"LT3","mace":"LT4"},
+{"name":"Player38","sword":"LT1","axe":"LT2","nethop":"LT3","smp":"LT4"},
+{"name":"Player39","vanilla":"LT1","uhc":"LT2","pot":"LT3","axe":"LT4"},
+{"name":"Player40","nethop":"LT1","smp":"LT2","sword":"LT3","mace":"LT4"},
 
-{"name":"Player41","uhc":"LT3","axe":"LT2"},
-{"name":"Player42","uhc":"LT3"},
-{"name":"Player43","uhc":"LT2"},
-{"name":"Player44","smp":"LT3","axe":"LT3"},
-{"name":"Player45","uhc":"LT3"},
-{"name":"Player46","uhc":"HT2"},
-{"name":"Player47","uhc":"LT3"},
-{"name":"Player48","axe":"LT3"},
-{"name":"Player49","uhc":"LT2","smp":"LT3"},
-{"name":"Player50","uhc":"LT3"},
-
-{"name":"Player51","uhc":"LT3"},
-{"name":"Player52","uhc":"HT1"},
-{"name":"Player53","uhc":"LT3","axe":"LT3"},
-{"name":"Player54","uhc":"LT2"},
-{"name":"Player55","uhc":"LT3"},
-{"name":"Player56","smp":"LT3"},
-{"name":"Player57","uhc":"LT3"},
-{"name":"Player58","uhc":"HT3"},
-{"name":"Player59","uhc":"LT3"},
-{"name":"Player60","uhc":"LT2"},
-
-{"name":"Player61","uhc":"LT3"},
-{"name":"Player62","axe":"LT3"},
-{"name":"Player63","uhc":"LT3","smp":"LT3"},
-{"name":"Player64","uhc":"LT2"},
-{"name":"Player65","uhc":"LT3"},
-{"name":"Player66","uhc":"LT3"},
-{"name":"Player67","uhc":"HT2"},
-{"name":"Player68","uhc":"LT3"},
-{"name":"Player69","smp":"LT3"},
-{"name":"Player70","uhc":"LT3"},
-
-{"name":"Player71","uhc":"LT3"},
-{"name":"Player72","uhc":"LT2"},
-{"name":"Player73","uhc":"LT3"},
-{"name":"Player74","uhc":"LT3"},
-{"name":"Player75","uhc":"LT3"},
-{"name":"Player76","uhc":"HT3"},
-{"name":"Player77","uhc":"LT3"},
-{"name":"Player78","axe":"LT3"},
-{"name":"Player79","uhc":"LT2"},
-{"name":"Player80","uhc":"LT3"},
-
-{"name":"Player81","uhc":"LT3"},
-{"name":"Player82","uhc":"LT3"},
-{"name":"Player83","uhc":"LT3"},
-{"name":"Player84","uhc":"LT2"},
-{"name":"Player85","uhc":"LT3"},
-{"name":"Player86","uhc":"HT2"},
-{"name":"Player87","uhc":"LT3"},
-{"name":"Player88","uhc":"LT3"},
-{"name":"Player89","uhc":"LT2"},
-{"name":"Player90","uhc":"LT3"},
-
-{"name":"Player91","uhc":"LT3"},
-{"name":"Player92","uhc":"LT3"},
-{"name":"Player93","uhc":"LT3"},
-{"name":"Player94","uhc":"LT2"},
-{"name":"Player95","uhc":"LT3"},
-{"name":"Player96","uhc":"LT3"},
-{"name":"Player97","uhc":"HT1"},
-{"name":"Player98","uhc":"LT3"},
-{"name":"Player99","uhc":"LT2"},
-{"name":"Player100","uhc":"LT3"}
+/* sprinkle some HT for realism */
+{"name":"Player41","vanilla":"HT1","uhc":"LT3","pot":"LT4"},
+{"name":"Player42","uhc":"HT2","smp":"LT4","axe":"LT5"},
+{"name":"Player43","pot":"HT3","nethop":"LT4","mace":"LT5"},
+{"name":"Player44","sword":"HT2","axe":"LT4","vanilla":"LT5"},
+{"name":"Player45","mace":"HT1","uhc":"LT4","smp":"LT5"},
+{"name":"Player46","vanilla":"HT2","pot":"LT4","axe":"LT5"},
+{"name":"Player47","uhc":"HT3","sword":"LT4","mace":"LT5"},
+{"name":"Player48","nethop":"HT2","smp":"LT4","vanilla":"LT5"},
+{"name":"Player49","axe":"HT3","pot":"LT4","uhc":"LT5"},
+{"name":"Player50","sword":"HT1","mace":"LT4","vanilla":"LT5"}
 ];
 
 let currentMode="global";
@@ -406,20 +386,42 @@ function arrow(high){
 }
 
 function compute(){
-    data.forEach(p=>p.total=0);
+    data.forEach(player=>{
+        let total = 0;
+        let played = 0;
+
+        modes.forEach(mode=>{
+            let tier = player[mode];
+            if(!tier) return;
+
+            let pts = tierPoints[tier] || 0;
+            total += pts;
+            played++;
+        });
+
+        player.total = total;
+        player.avg = played ? (total / played) : 0;
+    });
 }
 
 /* ========================= */
 
 function renderGlobal(){
     global.innerHTML="";
-    let sorted=[...data];
+    let sorted = [...data].sort((a, b) => {
+        if (b.total !== a.total) {
+            return b.total - a.total;
+        }
+        return b.avg - a.avg;
+    });
 
     sorted.forEach((p,i)=>{
         let div=document.createElement('div');
         div.onclick = () => openProfile(p);
         div.className='global-player';
-
+        if(i === 0) div.classList.add("rank-1");
+        if(i === 1) div.classList.add("rank-2");
+        if(i === 2) div.classList.add("rank-3");
         let left=document.createElement('div');
         left.className='left';
 
@@ -443,8 +445,11 @@ function renderGlobal(){
         icon.innerHTML=arrow(true);
 
         div.appendChild(left);
+        let pts = document.createElement('div');
+        pts.className = "points";
+        pts.textContent = "(" + Math.round(p.total) + " Points)";
+        div.appendChild(pts);
         div.appendChild(icon);
-
         global.appendChild(div);
     });
 }
@@ -622,16 +627,11 @@ function closeProfile(){
 
 closeModal.onclick = closeProfile;
 
-window.onclick = (e)=>{
-    if(e.target === modal){
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
         closeProfile();
     }
-};
-window.onclick = (e)=>{
-    if(e.target === modal){
-        modal.style.display = "none";
-    }
-};
+});
 </script>
 
 </body>
