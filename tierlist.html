@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PvP Leaderboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#05070c;
+    --panel:rgba(255,255,255,0.04);
+    --panel2:rgba(255,255,255,0.06);
+    --text:#e6edf3;
+    --muted:#9ca3af;
+}
+
+body{
+    margin:0;
+    font-family:'Poppins',system-ui;
+    background:radial-gradient(circle at top,#0b1220,var(--bg));
+    color:var(--text);
+}
+
+.container{
+    max-width:1200px;
+    margin:40px auto;
+    padding:20px;
+}
+
+h1{font-size:30px;margin-bottom:10px;}
+
+.topbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;}
+
+.tabs{display:flex;gap:8px;}
+
+.tab{
+    padding:8px 14px;
+    border-radius:16px;
+    cursor:pointer;
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,0.08);
+    transition:.2s;
+}
+.tab:hover{transform:translateY(-2px);background:var(--panel2);}
+.tab.active{background:#238636;border-color:#2ea043;}
+
+.search input{
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:var(--panel);
+    color:white;
+    width:220px;
+    outline:none;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+    margin-top:20px;
+    align-items:start;
+}
+
+.column{
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:24px;
+    padding:10px;
+}
+
+.column h2{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    font-size: 20px;
+    margin: 0;
+}
+
+.player{
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px;
+    margin:6px 0;
+    border-radius:10px;
+    background:rgba(255,255,255,0.03);
+    transition:.2s;
+}
+.player:hover{transform:scale(1.03);background:rgba(255,255,255,0.07);}
+
+.left{display:flex;align-items:center;gap:10px;}
+
+.skin img{
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    image-rendering: pixelated;
+    background:rgba(0,0,0,0.2);
+    display:block;
+}
+
+.name{font-size:17px;}
+
+.tier-icon svg{
+    width:22px;
+    height:22px;
+    stroke:currentColor;
+    stroke-width:3;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    color:#9ca3af;
+}
+
+.global-player{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+    margin:6px 0;
+    border-radius:12px;
+    background:var(--panel);
+}
+.global-player.rank-1{box-shadow:0 0 14px gold;border:1px solid gold;}
+.global-player.rank-2{box-shadow:0 0 14px silver;border:1px solid silver;}
+.global-player.rank-3{box-shadow:0 0 14px #cd7f32;border:1px solid #cd7f32;}
+
+.unranked{text-align:center;color:#6b7280;}
+.divider{
+    height:1.5px;
+    border-radius:10px;
+    width:100%;
+    margin:0 0 15px;
+    background: rgba(255,255,255,0.1);
+}
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.2s ease;
+    z-index:999;
+}
+
+.modal.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.modal-content{
+    background:#0b1220;
+    padding:20px;
+    border-radius:20px;
+    width:350px;
+    max-height:80vh;
+    overflow:auto;
+    border:1px solid rgba(255,255,255,0.1);
+
+    transform:scale(0.95);
+    transition:transform 0.2s ease;
+}
+
+.modal.show .modal-content{
+    transform:scale(1);
+}
+
+#closeModal{
+    float:right;
+    cursor:pointer;
+    font-size:22px;
+    position:absolute;
+    color:#666666;
+    transition: color 0.2s;
+}
+#closeModal:hover{
+    color:#ffffff;
+}
+
+.profile-header{
+    text-align:center;
+}
+
+.profile-header img{
+    width:100px;
+    height:100px;
+    border-radius:12px;
+    image-rendering:pixelated;
+    margin-bottom:10px;
+}
+
+.profile-modes{
+    margin-top:15px;
+}
+
+.mode-row{
+    display:flex;
+    justify-content:space-between;
+    padding:8px;
+    margin:5px 0;
+    border-radius:8px;
+    background:rgba(255,255,255,0.05);
+}
+
+.untested{
+    color:#6b7280;
+}
+.tier-1{ color:#facc15; }
+.tier-2{ color:#c0c0c0; }
+.tier-3{ color:#cd7f32; }
+.tier-4{ color:var(--panel); }
+.tier-5{ color:var(--panel); }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>PvP Leaderboard</h1>
+
+<div class="topbar">
+    <div class="tabs">
+        <div class="tab active" data-mode="global">Overall</div>
+        <div class="tab" data-mode="vanilla">Vanilla</div>
+        <div class="tab" data-mode="uhc">UHC</div>
+        <div class="tab" data-mode="pot">Pot</div>
+        <div class="tab" data-mode="nethop">NethOP</div>
+        <div class="tab" data-mode="smp">SMP</div>
+        <div class="tab" data-mode="sword">Sword</div>
+        <div class="tab" data-mode="axe">Axe</div>
+        <div class="tab" data-mode="mace">Mace</div>
+    </div>
+    <div class="search"><input id="search" placeholder="Search player..."></div>
+</div>
+
+<div id="global"></div>
+<div class="grid" id="grid"></div>
+</div>
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal">&times;</span>
+
+        <div class="profile-header">
+            <img id="profileSkin">
+            <h2 id="profileName"></h2>
+        </div>
+
+        <div id="profileModes" class="profile-modes"></div>
+    </div>
+</div>
+<script>
+const modes = [
+    "vanilla",
+    "uhc",
+    "pot",
+    "nethop",
+    "smp",
+    "sword",
+    "axe",
+    "mace"
+];
+
+let data = [
+{"name":"Player1","uhc":"HT1","axe":"HT2","smp":"HT3"},
+{"name":"Player2","uhc":"HT2","axe":"HT1"},
+{"name":"Player3","uhc":"LT3","smp":"LT3","axe":"LT2"},
+{"name":"Player4","uhc":"LT2"},
+{"name":"Player5","uhc":"LT3","axe":"LT3","smp":"LT3"},
+{"name":"Player6","uhc":"HT3","axe":"LT2","smp":"HT2"},
+{"name":"Player7","axe":"LT3","smp":"LT2"},
+{"name":"Player8","uhc":"LT3"},
+{"name":"Player9","uhc":"LT2","axe":"LT3"},
+{"name":"Player10","smp":"LT3","axe":"LT3","uhc":"LT3"},
+
+{"name":"Player11","uhc":"HT1","smp":"HT2"},
+{"name":"Player12","uhc":"LT3","axe":"LT3"},
+{"name":"Player13","uhc":"LT3"},
+{"name":"Player14","axe":"LT2","smp":"LT3"},
+{"name":"Player15","uhc":"LT2","smp":"LT3"},
+{"name":"Player16","uhc":"HT2","axe":"HT2"},
+{"name":"Player17","uhc":"LT3","axe":"LT3","smp":"LT3"},
+{"name":"Player18","smp":"LT2"},
+{"name":"Player19","uhc":"LT3"},
+{"name":"Player20","uhc":"LT2","axe":"LT3","smp":"LT3"},
+
+{"name":"Player21","uhc":"HT3","axe":"HT2"},
+{"name":"Player22","uhc":"LT3"},
+{"name":"Player23","axe":"LT3","smp":"LT3"},
+{"name":"Player24","uhc":"LT3","smp":"LT2"},
+{"name":"Player25","uhc":"LT2"},
+{"name":"Player26","uhc":"LT3","axe":"LT3"},
+{"name":"Player27","uhc":"HT2","smp":"HT1"},
+{"name":"Player28","uhc":"LT3"},
+{"name":"Player29","axe":"LT2"},
+{"name":"Player30","uhc":"LT3","smp":"LT3"},
+
+{"name":"Player31","uhc":"LT2"},
+{"name":"Player32","uhc":"HT2","axe":"HT3"},
+{"name":"Player33","uhc":"LT3","smp":"LT3"},
+{"name":"Player34","axe":"LT3"},
+{"name":"Player35","uhc":"LT3"},
+{"name":"Player36","uhc":"LT3","smp":"LT3"},
+{"name":"Player37","uhc":"HT3"},
+{"name":"Player38","uhc":"LT2","axe":"LT3"},
+{"name":"Player39","smp":"LT3"},
+{"name":"Player40","uhc":"LT3"},
+
+{"name":"Player41","uhc":"LT3","axe":"LT2"},
+{"name":"Player42","uhc":"LT3"},
+{"name":"Player43","uhc":"LT2"},
+{"name":"Player44","smp":"LT3","axe":"LT3"},
+{"name":"Player45","uhc":"LT3"},
+{"name":"Player46","uhc":"HT2"},
+{"name":"Player47","uhc":"LT3"},
+{"name":"Player48","axe":"LT3"},
+{"name":"Player49","uhc":"LT2","smp":"LT3"},
+{"name":"Player50","uhc":"LT3"},
+
+{"name":"Player51","uhc":"LT3"},
+{"name":"Player52","uhc":"HT1"},
+{"name":"Player53","uhc":"LT3","axe":"LT3"},
+{"name":"Player54","uhc":"LT2"},
+{"name":"Player55","uhc":"LT3"},
+{"name":"Player56","smp":"LT3"},
+{"name":"Player57","uhc":"LT3"},
+{"name":"Player58","uhc":"HT3"},
+{"name":"Player59","uhc":"LT3"},
+{"name":"Player60","uhc":"LT2"},
+
+{"name":"Player61","uhc":"LT3"},
+{"name":"Player62","axe":"LT3"},
+{"name":"Player63","uhc":"LT3","smp":"LT3"},
+{"name":"Player64","uhc":"LT2"},
+{"name":"Player65","uhc":"LT3"},
+{"name":"Player66","uhc":"LT3"},
+{"name":"Player67","uhc":"HT2"},
+{"name":"Player68","uhc":"LT3"},
+{"name":"Player69","smp":"LT3"},
+{"name":"Player70","uhc":"LT3"},
+
+{"name":"Player71","uhc":"LT3"},
+{"name":"Player72","uhc":"LT2"},
+{"name":"Player73","uhc":"LT3"},
+{"name":"Player74","uhc":"LT3"},
+{"name":"Player75","uhc":"LT3"},
+{"name":"Player76","uhc":"HT3"},
+{"name":"Player77","uhc":"LT3"},
+{"name":"Player78","axe":"LT3"},
+{"name":"Player79","uhc":"LT2"},
+{"name":"Player80","uhc":"LT3"},
+
+{"name":"Player81","uhc":"LT3"},
+{"name":"Player82","uhc":"LT3"},
+{"name":"Player83","uhc":"LT3"},
+{"name":"Player84","uhc":"LT2"},
+{"name":"Player85","uhc":"LT3"},
+{"name":"Player86","uhc":"HT2"},
+{"name":"Player87","uhc":"LT3"},
+{"name":"Player88","uhc":"LT3"},
+{"name":"Player89","uhc":"LT2"},
+{"name":"Player90","uhc":"LT3"},
+
+{"name":"Player91","uhc":"LT3"},
+{"name":"Player92","uhc":"LT3"},
+{"name":"Player93","uhc":"LT3"},
+{"name":"Player94","uhc":"LT2"},
+{"name":"Player95","uhc":"LT3"},
+{"name":"Player96","uhc":"LT3"},
+{"name":"Player97","uhc":"HT1"},
+{"name":"Player98","uhc":"LT3"},
+{"name":"Player99","uhc":"LT2"},
+{"name":"Player100","uhc":"LT3"}
+];
+
+let currentMode="uhc";
+
+const grid=document.getElementById('grid');
+const global=document.getElementById('global');
+const search=document.getElementById('search');
+const tabs=document.querySelectorAll('.tab');
+
+function getHead(name){
+    return `https://mc-heads.net/avatar/${name}/64`;
+}
+
+function parse(t){
+    if(!t) return null;
+    return {tier:+t.slice(2), high:t.startsWith('HT')};
+}
+
+function arrow(high){
+    return high
+        ? `<svg viewBox="0 0 24 24"><path d="M6 14l6-6 6 6"/><path d="M6 20l6-6 6 6"/></svg>`
+        : `<svg viewBox="0 0 24 24"><path d="M6 18l6-6 6 6"/></svg>`;
+}
+
+function compute(){
+    data.forEach(p=>p.total=0);
+}
+
+/* ========================= */
+
+function renderGlobal(){
+    global.innerHTML="";
+    let sorted=[...data];
+
+    sorted.forEach((p,i)=>{
+        let div=document.createElement('div');
+        div.onclick = () => openProfile(p);
+        div.className='global-player';
+
+        let left=document.createElement('div');
+        left.className='left';
+
+        let skinDiv=document.createElement('div');
+        skinDiv.className='skin';
+
+        let img=document.createElement('img');
+        img.src=getHead(p.name);
+
+        skinDiv.appendChild(img);
+
+        let name=document.createElement('div');
+        name.className='name';
+        name.textContent=p.name;
+
+        left.appendChild(skinDiv);
+        left.appendChild(name);
+
+        let icon=document.createElement('div');
+        icon.className='tier-icon';
+        icon.innerHTML=arrow(true);
+
+        div.appendChild(left);
+        div.appendChild(icon);
+
+        global.appendChild(div);
+    });
+}
+
+/* ========================= */
+
+function renderGrid(){
+    let q=search.value.toLowerCase();
+    grid.innerHTML="";
+
+    // 🎨 Define colors per tier
+    const tierColors = {
+        1: "rgba(255, 215, 0, 0.15)",   // gold
+        2: "rgba(192, 192, 192, 0.15)", // silver
+        3: "rgba(205, 127, 50, 0.15)",  // bronze
+        4: "var(--panel)",
+        5: "var(--panel)"
+    };
+
+    for(let t=1;t<=5;t++){
+        let col=document.createElement('div');
+        col.className='column';
+
+        // 🎨 Apply custom color
+        col.style.background = tierColors[t];
+        col.style.border = `1px solid ${tierColors[t].replace("0.15","0.35")}`;
+
+        let title=document.createElement('h2');
+        title.textContent="Tier "+t;
+        col.appendChild(title);
+        let divider = document.createElement('div');
+        divider.className = 'divider';
+        col.appendChild(divider);
+        
+        let players = data
+        .filter(p => p.name.toLowerCase().includes(q))
+        .filter(p => parse(p[currentMode])?.tier === t)
+        .sort((a, b) => {
+            const A = parse(a[currentMode]);
+            const B = parse(b[currentMode]);
+
+            if(!A && !B) return 0;
+            if(!A) return 1;
+            if(!B) return -1;
+
+            if(A.high && !B.high) return -1;
+            if(!A.high && B.high) return 1;
+
+            return A.tier - B.tier;
+        });
+
+        players.forEach(p=>{
+            let div=document.createElement('div');
+            div.onclick = () => openProfile(p);
+            div.className='player';
+
+            let left=document.createElement('div');
+            left.className='left';
+
+            let skinDiv=document.createElement('div');
+            skinDiv.className='skin';
+
+            let img=document.createElement('img');
+            img.src=getHead(p.name);
+
+            skinDiv.appendChild(img);
+
+            let name=document.createElement('div');
+            name.className='name';
+            name.textContent=p.name;
+
+            left.appendChild(skinDiv);
+            left.appendChild(name);
+
+            let icon=document.createElement('div');
+            icon.className='tier-icon';
+
+            let meta=parse(p[currentMode]);
+            icon.innerHTML=arrow(meta?.high);
+
+            div.appendChild(left);
+            div.appendChild(icon);
+
+            col.appendChild(div);
+        });
+
+        if(!players.length){
+            let e=document.createElement('div');
+            e.className='unranked';
+            e.textContent='—';
+            col.appendChild(e);
+        }
+
+        grid.appendChild(col);
+    }
+}
+
+/* ========================= */
+
+function renderAll(){
+    compute();
+
+    if(currentMode==='global'){
+        renderGlobal();
+        grid.innerHTML="";
+    } else {
+        global.innerHTML="";
+        renderGrid();
+    }
+}
+
+search.addEventListener('input',renderAll);
+
+tabs.forEach(t=>t.onclick=()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    currentMode=t.dataset.mode;
+    renderAll();
+});
+
+renderAll();
+const modal = document.getElementById('profileModal');
+const profileName = document.getElementById('profileName');
+const profileSkin = document.getElementById('profileSkin');
+const profileModes = document.getElementById('profileModes');
+const closeModal = document.getElementById('closeModal');
+
+function openProfile(player){
+    profileName.textContent = player.name;
+    profileSkin.src = getHead(player.name);
+
+    profileModes.innerHTML = "";
+
+    modes.forEach(mode=>{
+        let row = document.createElement('div');
+        row.className = 'mode-row';
+
+        let label = document.createElement('div');
+        label.textContent = mode.toUpperCase();
+
+        let value = document.createElement('div');
+
+        let tier = player[mode];
+
+        if(!tier){
+            value.textContent = "Untested";
+            value.className = "untested";
+        } else {
+            let meta = parse(tier);
+        
+            value.textContent = tier;
+        
+            // add tier color
+            value.classList.add(`tier-${meta.tier}`);
+        
+            // high vs low styling
+            if(meta.high){
+                value.classList.add("tier-high");
+            } else {
+                value.classList.add("tier-low");
+            }
+        }
+
+        row.appendChild(label);
+        row.appendChild(value);
+
+        profileModes.appendChild(row);
+    });
+
+    modal.classList.add("show");;
+}
+function closeProfile(){
+    modal.classList.remove("show");
+}
+
+closeModal.onclick = closeProfile;
+
+window.onclick = (e)=>{
+    if(e.target === modal){
+        closeProfile();
+    }
+};
+window.onclick = (e)=>{
+    if(e.target === modal){
+        modal.style.display = "none";
+    }
+};
+</script>
+
+</body>
+</html>
