@@ -128,26 +128,91 @@ h1{font-size:30px;margin-bottom:10px;}
     border-radius:14px;
     background:var(--panel);
     cursor: pointer;
+    transition: 0.2s;
+}
+.global-player:hover{
+    transform: scale(1.03);
 }
 .global-player.rank-1{
     box-shadow:0 0 6px 1px gold;
     border:1px solid gold;
-    background:linear-gradient(112deg,rgba(255, 187, 0, 1) 0%, rgba(255, 187, 0, 1) 2%, rgba(24, 24, 74, 1) 26%);
+    background:linear-gradient(112deg,rgba(255, 187, 0, 1) 0%, rgba(255, 187, 0, 1) 2%, rgba(4, 4, 54, 1) 26%);
     
 }
 .global-player.rank-2{
     box-shadow:0 0 6px 1px silver;
     border:1px solid silver;
-    background: linear-gradient(112deg,rgba(230, 230, 230, 1) 0%, rgba(230, 230, 230, 1) 2%, rgba(24, 24, 74, 1) 25.5%);
+    background: linear-gradient(112deg,rgba(230, 230, 230, 1) 0%, rgba(230, 230, 230, 1) 2%, rgba(4, 4, 54, 1) 24%);
     
 }
 .global-player.rank-3{
     box-shadow:0 0 6px 1px #cd7f32;
     border:1px solid #cd7f32;
-    background: linear-gradient(112deg,rgba(205, 127, 50, 1) 0%, rgba(205, 127, 50, 1) 2%, rgba(24, 24, 74, 1) 25%);
+    background: linear-gradient(112deg,rgba(205, 127, 50, 1) 0%, rgba(205, 127, 50, 1) 2%, rgba(4, 4, 54, 1) 26%);
     
 }
+.global-player.rank-1,
+.global-player.rank-2,
+.global-player.rank-3{
+    position: relative;
+    overflow: hidden;
 
+    --glint-speed: 1.8s;
+    --glint-delay: 2.5s;
+}
+
+/* rank colors */
+.global-player.rank-1{
+    box-shadow:0 0 6px 1px gold;
+    border:1px solid gold;
+}
+
+.global-player.rank-2{
+    box-shadow:0 0 6px 1px silver;
+    border:1px solid silver;
+}
+
+.global-player.rank-3{
+    box-shadow:0 0 6px 1px #cd7f32;
+    border:1px solid #cd7f32;
+}
+
+/* GLINT LAYER (stable) */
+.global-player.rank-1::after,
+.global-player.rank-2::after,
+.global-player.rank-3::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+
+    opacity:0;
+
+    background: linear-gradient(
+        100deg,
+        transparent 0%,
+        rgba(255,255,255,0) 43%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0) 53%,
+        transparent 100%
+    );
+
+    background-size: 200% 100%;
+}
+
+/* hover triggers clean loop */
+.global-player.rank-1:after,
+.global-player.rank-2:after,
+.global-player.rank-3:after{
+    opacity:1;
+    animation: glintSweep var(--glint-speed) ease infinite;
+}
+
+/* smooth infinite sweep */
+@keyframes glintSweep{
+    0%   { background-position: 185% 0; }
+    100% { background-position: -20% 0; }
+}
 .unranked{text-align:center;color:#6b7280;}
 .divider{
     height:1.5px;
