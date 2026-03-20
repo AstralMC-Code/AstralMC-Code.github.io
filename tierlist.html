@@ -316,13 +316,33 @@
             text-align: center;
         }
 
-        .profile-header img {
-            width: 100px;
-            height: 100px;
-            border-radius: 12px;
-            image-rendering: pixelated;
-            margin-bottom: 10px;
-        }
+.skin-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    margin: 0 auto 10px auto;
+
+    background: rgba(0,0,0,0.2);
+    border: 2px solid rgba(255,255,255,0.2);
+
+    position: relative;
+}
+
+.skin-circle img {
+    position: absolute;
+
+    /* make skin large so we can crop it */
+    width: 180px;
+    height: auto;
+
+    image-rendering: pixelated;
+
+    left: 50%;
+    top: -60%;
+    transform: translateX(-50%) scale(0.6);
+}
 
         .profile-modes {
             margin-top: 15px;
@@ -414,7 +434,9 @@
             <span id="closeModal">&times;</span>
 
             <div class="profile-header">
-                <img id="profileSkin">
+                <div class="skin-circle">
+                    <img id="profileSkin">
+                </div>
                 <h2 id="profileName"></h2>
             </div>
 
@@ -780,7 +802,7 @@ function getRankIcon(rankName) {
 
         function openProfile(player) {
             profileName.textContent = player.name;
-            profileSkin.src = getHead(player.name);
+            profileSkin.src = `https://mc-heads.net/body/${player.name}`;
         const oldRank = document.getElementById("profileRank");
         if (oldRank) oldRank.remove();
         
