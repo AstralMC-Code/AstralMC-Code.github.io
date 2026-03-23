@@ -69,13 +69,21 @@
         }
 
         .search input {
-            padding: 10px;
+            font-size: 12px;
+            padding: 12px;
             border: none;
-            border-radius: 10px;
+            border-radius: 24px;
             background: var(--panel);
             color: white;
             width: 220px;
-            outline: none;
+            outline: 1px solid var(--panel);
+            transition: outline 0.2s;
+        }
+        .search input:hover {
+            outline: 1px solid #2ea043;
+        }
+        .search input:focus {
+            outline: 1px solid #2ea043;
         }
 
         .grid {
@@ -432,16 +440,14 @@
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <span id="closeModal">&times;</span>
-
             <div class="profile-header">
                 <div class="skin-circle">
                     <img id="profileSkin">
                 </div>
                 <h2 id="profileName"></h2>
             </div>
-
-            <div id="profileModes" class="profile-modes"></div>
-        </div>
+        <div id="profileModes" class="profile-modes"></div>
+    </div>
     </div>
     <script>
 <!-- TEMPORARY CODE -->
@@ -483,7 +489,7 @@ function generateData({
     return data;
 }
 let data = generateData({
-    count: 100,
+    count: 150,
     htChance: 0.4
 });
 data.push(
@@ -548,25 +554,36 @@ data.push(
                 `<svg viewBox="0 0 24 24"><path d="M6 18l6-6 6 6"/></svg>`;
         }
 
-        function compute() {
-            data.forEach(player => {
-                let total = 0;
-                let played = 0;
+function compute() {
+    data.forEach(player => {
+        let total = 0;
+        let played = 0;
 
-                modes.forEach(mode => {
-                    let tier = player[mode];
-                    if (!tier) return;
+        modes.forEach(mode => {
+            let tier = player[mode];
+            if (!tier) return;
 
-                    let pts = tierPoints[tier] || 0;
-                    total += pts;
-                    played++;
-                });
+            let pts = tierPoints[tier] || 0;
+            total += pts;
+            played++;
+        });
 
-                player.total = total;
-                player.avg = played ? (total / played) : 0;
-                player.rank = getRank(player.total);
-            });
-        }
+        player.total = total;
+        player.avg = played ? (total / played) : 0;
+        player.rank = getRank(player.total);
+    });
+
+    // ⭐ ADD THIS: assign fixed global rankings
+    const sorted = [...data].sort((a, b) => {
+        if (b.total !== a.total) return b.total - a.total;
+        return b.avg - a.avg;
+    });
+
+    sorted.forEach((p, i) => {
+        p.globalRank = i + 1;
+    });
+}
+
 function getRank(points) {
     let current = ranks[0];
 
@@ -624,58 +641,73 @@ function getRankIcon(rankName) {
 }
         /* ========================= */
 
-        function renderGlobal() {
-            global.innerHTML = "";
-            let sorted = [...data].sort((a, b) => {
-                if (b.total !== a.total) {
-                    return b.total - a.total;
-                }
-                return b.avg - a.avg;
-            });
+function renderGlobal() {
+    global.innerHTML = "";
 
-            sorted.forEach((p, i) => {
-                let div = document.createElement('div');
-                div.onclick = () => openProfile(p);
-                div.className = 'global-player';
-                if (i === 0) div.classList.add("rank-1");
-                if (i === 1) div.classList.add("rank-2");
-                if (i === 2) div.classList.add("rank-3");
-                let left = document.createElement('div');
-                left.className = 'left';
-                
-                let rank = document.createElement('div');
-                rank.className = 'rank-number';
-                rank.textContent = `${i + 1}.`;
+    let q = search.value.toLowerCase(); // ← ADD THIS
 
-                let skinDiv = document.createElement('div');
-                skinDiv.className = 'skin';
+    let sorted = [...data]
+        .filter(p => p.name.toLowerCase().includes(q)) // ← ADD THIS
+        .sort((a, b) => {
+            if (b.total !== a.total) {
+                return b.total - a.total;
+            }
+            return b.avg - a.avg;
+        });
 
-                let img = document.createElement('img');
-                img.src = getHead(p.name);
+    sorted.forEach((p, i) => {
+        let div = document.createElement('div');
+        div.onclick = () => openProfile(p);
+        div.className = 'global-player';
 
-                skinDiv.appendChild(img);
+        if (p.globalRank === 1) div.classList.add("rank-1");
+        if (p.globalRank === 2) div.classList.add("rank-2");
+        if (p.globalRank === 3) div.classList.add("rank-3");
 
-                let name = document.createElement('div');
-                name.className = 'name';
-                name.textContent = p.name;
+        let left = document.createElement('div');
+        left.className = 'left';
 
-                left.appendChild(rank);
-                left.appendChild(skinDiv);
-                left.appendChild(name);
+        let rank = document.createElement('div');
+        rank.className = 'rank-number';
+        rank.textContent = `${p.globalRank}.`;
 
-                let icon = document.createElement('div');
-                icon.className = 'tier-icon';
-                icon.innerHTML = arrow(true);
+        let skinDiv = document.createElement('div');
+        skinDiv.className = 'skin';
 
-                div.appendChild(left);
-                let pts = document.createElement('div');
-                pts.className = "points";
-                pts.textContent = "(" + Math.round(p.total) + " Points)";
-                div.appendChild(pts);
-                div.appendChild(icon);
-                global.appendChild(div);
-            });
-        }
+        let img = document.createElement('img');
+        img.src = getHead(p.name);
+
+        skinDiv.appendChild(img);
+
+        let name = document.createElement('div');
+        name.className = 'name';
+        name.textContent = p.name;
+
+        left.appendChild(rank);
+        left.appendChild(skinDiv);
+        left.appendChild(name);
+
+        let icon = document.createElement('div');
+        icon.className = 'tier-icon';
+        icon.innerHTML = arrow(true);
+
+        div.appendChild(left);
+
+        let pts = document.createElement('div');
+        pts.className = "points";
+        pts.textContent = "(" + Math.round(p.total) + " Points)";
+
+        div.appendChild(pts);
+        div.appendChild(icon);
+
+        global.appendChild(div);
+    });
+
+    // optional: show empty state
+    if (!sorted.length) {
+        global.innerHTML = `<div class="unranked">No players found</div>`;
+    }
+}
 
         /* ========================= */
 
